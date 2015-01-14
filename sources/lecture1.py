@@ -16,7 +16,7 @@ a = list(range(100))
 random.shuffle(a)
 
 
-def insertion_search(a):
+def insertion_sort(a):
     """
     ## Сортировка вставками (insertion sort)
 
@@ -89,6 +89,6 @@ def merge_sort(a):
         return result
 
 
-assert (insertion_search(deepcopy(a)) ==
+assert (insertion_sort(deepcopy(a)) ==
         merge_sort(deepcopy(a)) ==
         list(range(100)))
