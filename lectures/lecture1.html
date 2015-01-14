@@ -4,6 +4,10 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>lecture1.py</title>
   <link rel="stylesheet" href="pycco.css">
+  <!--MathJax for LaTeX formulas-->
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 </head>
 <body>
 <div id="background"></div>
@@ -54,9 +58,9 @@
 отсортированной части. Проблема с долгим сдвигом массива вправо
 решается при помощи смены указателей» — Википедия</p>
 <p><strong>Время работы:</strong></p>
-<p><code>O(n^2)</code> в худшем случае: входной массив отсортирован в порядке,
+<p>\(O(n^2)\) в худшем случае: входной массив отсортирован в порядке,
 обратном нужному.</p>
-<p><code>O(n)</code> в лучшем: массив уже отсортирован.</p>
+<p>\(O(n)\) в лучшем: массив уже отсортирован.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
@@ -91,12 +95,12 @@
 <p>Алгоритм рекурсивный: на каждом шаге мы разделяем массив
 на две части и сортируем каждую отдельно (тем же самым алгоритмом),
 после чего сливаем две части вместе.</p>
-<p><strong>Время работы</strong> <code>O(nlogn)</code>.</p>
-<p>Если время работы алгоритма на массиве длинны n — <code>T[n]</code>,
+<p><strong>Время работы</strong> \(O(nlogn)\).</p>
+<p>Если время работы алгоритма на массиве длинны \(n\) — \(T[n]\),
 то по определению справедливо рекуррентное соотношение
-<code>T[n] = 2T[n/2] + n</code>: две сортировки массивов размера
+\(T[n] = 2T[n/2] + n\): две сортировки массивов размера
 n/2 и еще n операций на слияние.</p>
-<p>Можно убедиться, что <code>T[n] = n/2 + nlogn / log2 = O(nlogn)</code>.</p>
+<p>Можно убедиться, что \(T[n] = n/2 + nlogn / log2 = O(nlogn)\).</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
