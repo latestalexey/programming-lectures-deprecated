@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>lecture1.py</title>
-  <link rel="stylesheet" href="pycco.css">
-  
-  <!--MathJax for LaTeX formulas-->
-  <script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>lecture1.py</title>
+	<link rel="stylesheet" href="pycco.css">
+	
+	<!--MathJax for LaTeX formulas-->
+	<script type="text/javascript"
+		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
 
 </head>
 <body>
 <div id='container'>
-  <div id="background"></div>
-  <div class='section'>
-    <div class='docs'><h1>lecture1.py</h1></div>
-  </div>
-  <div class='clearall'>
-  <div class='section' id='section-0'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-0'>#</a>
-      </div>
-      <p><strong>Лекция 1: Оценка сложности алгоритмов, простейшие сортировки</strong></p>
+	<div id="background"></div>
+	<div class='section'>
+		<div class='docs'><h1>lecture1.py</h1></div>
+	</div>
+	<div class='clearall'>
+	<div class='section' id='section-0'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-0'>#</a>
+			</div>
+			
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre></pre></div>
+		</div>
+	</div>
+	<div class='clearall'></div>
+	<div class='section' id='section-1'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-1'>#</a>
+			</div>
+			<p><strong>Лекция 1: Оценка сложности алгоритмов, простейшие сортировки</strong></p>
 <p>Рассмотрены простейшие сортировки. К сожалению, пока только код, теорию допишу
 позже.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-1'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-1'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
 <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-2'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-2'>#</a>
-      </div>
-      <h2>Сортировка вставками (insertion sort)</h2>
+		</div>
+	</div>
+	<div class='clearall'></div>
+	<div class='section' id='section-2'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-2'>#</a>
+			</div>
+			
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
+		</div>
+	</div>
+	<div class='clearall'></div>
+	<div class='section' id='section-3'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-3'>#</a>
+			</div>
+			<h2>Сортировка вставками (insertion sort)</h2>
 <p>Устойчивая сортировка, эффективная на небольших объемах данных.</p>
 <p>На каждом шаге элемент перемещается назад по массиву до тех пор, пока
 перед ним находится больший элемент.</p>
@@ -63,21 +77,9 @@
 <p>\(O(n^2) \) в худшем случае: входной массив отсортирован в порядке,
 обратном нужному.</p>
 <p>\(O(n) \) в лучшем: массив уже отсортирован.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-3'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-3'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
@@ -85,15 +87,27 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">break</span>
     <span class="k">return</span> <span class="n">a</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-4'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
-      </div>
-      <h2>Сортировка слиянием (merge sort)</h2>
+		</div>
+	</div>
+	<div class='clearall'></div>
+	<div class='section' id='section-4'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-4'>#</a>
+			</div>
+			
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
+		</div>
+	</div>
+	<div class='clearall'></div>
+	<div class='section' id='section-5'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-5'>#</a>
+			</div>
+			<h2>Сортировка слиянием (merge sort)</h2>
 <p>Алгоритм рекурсивный: на каждом шаге мы разделяем массив
 на две части и сортируем каждую отдельно (тем же самым алгоритмом),
 после чего сливаем две части вместе.</p>
@@ -104,36 +118,14 @@
 \(n/2 \) и еще n операций на слияние.</p>
 <p>Можно убедиться, что \(T[n] = O(n \log n) \), используя
 <a href="https://ru.wikipedia.org/wiki/Основная_теорема_о_рекуррентных_соотношениях">основную теорему о рекуррентных соотношениях</a>.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-5'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">a</span>
-    <span class="k">else</span><span class="p">:</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-6'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
-      </div>
-      <p>Стоит отслеживать глубину рекурсии и при необходимости
-сортировать части массива другим алгоритмом.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>        <span class="n">x</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Стоит отслеживать глубину рекурсии и при необходимости</span>
+        <span class="c"># сортировать части массива другим алгоритмом.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:])</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
@@ -152,11 +144,21 @@
 
 <span class="k">assert</span> <span class="p">(</span><span class="n">insertion_sort</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">==</span>
         <span class="n">merge_sort</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">==</span>
-        <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span>
-
-</pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
+        <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span></pre></div>
+		</div>
+	</div>
+	<div class='clearall'></div>
+	<div class='section' id='section-6'>
+		<div class='docs'>
+			<div class='octowrap'>
+				<a class='octothorpe' href='#section-6'>#</a>
+			</div>
+			
+		</div>
+		<div class='code'>
+			<div class="highlight"><pre></pre></div>
+		</div>
+	</div>
+	<div class='clearall'></div>
 </div>
 </body>

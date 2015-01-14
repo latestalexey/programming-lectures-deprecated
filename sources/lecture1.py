@@ -1,8 +1,4 @@
-#!/usr/bin/python3
 # coding: utf-8
-
-import random
-from copy import deepcopy
 
 """
 __Лекция 1: Оценка сложности алгоритмов, простейшие сортировки__
@@ -11,6 +7,9 @@ __Лекция 1: Оценка сложности алгоритмов, прос
 позже.
 
 """
+
+import random
+from copy import deepcopy
 
 a = list(range(100))
 random.shuffle(a)
@@ -38,7 +37,6 @@ def insertion_sort(a):
     \\(O(n) \\) в лучшем: массив уже отсортирован.
 
     """
-
     for i in range(1, len(a)):
         key = a[i]
         for k in range(i - 1, -1, -1):
