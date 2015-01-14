@@ -26,9 +26,9 @@
 
 На данный момент поддерживаются только синтаксис комментариев питона.
 
-Вам понадобится [pycco](https://github.com/fitzgen/pycco) (который, к сожалению, не работает с третьим питоном).
+Вам понадобится форк pycco, поддерживающий MathJax: [https://github.com/AmatanHead/pycco]().
 
-    $ pip install pycco
+    $ pip install git+https://github.com/AmatanHead/pycco.git
 
 Непосредственно компиляция файлов:
 
