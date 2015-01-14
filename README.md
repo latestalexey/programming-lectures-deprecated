@@ -32,7 +32,7 @@
 
 Непосредственно компиляция файлов:
 
-    (env)$ pycco sources/*.py -d lectures/
+    $ pycco sources/*.py -d lectures/
 
 
-[l1]: https://github.com/AmatanHead/Programming-lectures/lectures/lecture1.html
+[l1]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html
