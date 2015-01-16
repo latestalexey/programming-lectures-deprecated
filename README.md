@@ -9,7 +9,12 @@
 
 ## Содержание
 
- *  [Лекция 1: Оценка сложности алгоритмов, сортировки][l1]
+*   [1: Оценка сложности алгоритмов, сортировки][l1]
+    *   [Оценка сложности алгоритмов][l1.1]
+    *   [Сортировка выбором (selection sort)][l1.2]
+    *   [Сортировка вставками (insertion sort)][l1.3]
+    *   [Сортировка слиянием (merge sort)][l1.4]
+    *   [Быстрая сортировка (qsort)][l1.5]
 
 
 ## Сборка
@@ -35,3 +40,8 @@
 
 
 [l1]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html
+[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-2
+[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-4
+[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-6
+[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-8
+[l1.5]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-10
