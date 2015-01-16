@@ -1,134 +1,219 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<title>lecture1.py</title>
-	<link rel="stylesheet" href="pycco.css">
-	
-	<!--MathJax for LaTeX formulas-->
-	<script type="text/javascript"
-		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-	</script>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>lecture1.py</title>
+  <link rel="stylesheet" href="pycco.css">
+  
+  <!--MathJax for LaTeX formulas-->
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 
 </head>
 <body>
 <div id='container'>
-	<div id="background"></div>
-	<div class='section'>
-		<div class='docs'><h1>lecture1.py</h1></div>
-	</div>
-	<div class='clearall'>
-	<div class='section' id='section-0'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-0'>#</a>
-			</div>
-			
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
-	<div class='section' id='section-1'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-1'>#</a>
-			</div>
-			<p><strong>Лекция 1: Оценка сложности алгоритмов, простейшие сортировки</strong></p>
-<p>Рассмотрены простейшие сортировки. К сожалению, пока только код, теорию допишу
-позже.</p>
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-
-<span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
-<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
-	<div class='section' id='section-2'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-2'>#</a>
-			</div>
-			
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
-	<div class='section' id='section-3'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-3'>#</a>
-			</div>
-			<h2>Сортировка вставками (insertion sort)</h2>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>lecture1.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><strong>Оценка сложности алгоритмов, сортировки</strong></p>
+<p>Материалы: лекция 1 (13.01), семинар 2 (15.01).</p>
+<p>Лектор: Объедков Сергей Александрович<br>
+Семинарист: Макаров Илья Андреевич<br>
+Конспектировал Гончаров Владимир</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">speedtest</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <h2>Оценка сложности алгоритмов</h2>
+<p>Для оценки времени и памяти, которая уходит на выполнение алгоритма на
+входных данных размера <em>n</em> нам нужно знать, сколько операций совершит алгоритм
+и сколько памяти он потребляет. Однако часто это сделать сложно,
+особенно если мы ничего не знаем о природе данных (как долго происходит
+сложение, к примеру?) и архитектуре.</p>
+<p>Но часто это и не требуется: мы лишь хотим оценить, как растет время
+(или память) с ростом входных данных. Для этого можно математическими
+методами оценить количество требуемых ресурсов и записать ответ в виде
+эквивалентных функций.</p>
+<p>Применяются следующие обозначения:</p>
+<p>\(f = \bar{\bar{o}}(g) \Rightarrow \forall ~ c &gt; 0 ~ \exists ~ n_0 &gt; 0 :
+    \forall ~ n &gt; n_0 \Rightarrow (0 \le f &lt; cg)(n) \)</p>
+<p>\(f = \omega(g) \Rightarrow \forall ~ c &gt; 0 ~ \exists ~ n_0 &gt; 0 :
+    \forall ~ n &gt; n_0 \Rightarrow (0 \le cf &lt; g)(n) \)</p>
+<p>\(f = O(g) \Rightarrow \exists ~ c, n_0 &gt; 0 :
+    \forall ~ n &gt; n_0 \Rightarrow (0 \le f \le cg)(n) \)</p>
+<p>\(f = \Omega(g) \Rightarrow \exists ~ c, n_0 &gt; 0 :
+    \forall ~ n &gt; n_0 \Rightarrow (0 \le cf \le g)(n) \)</p>
+<p>\(f = \Theta(g) \Rightarrow \exists ~ c_1, c_2, n_0 &gt; 0 :
+    \forall ~ n &gt; n_0 \Rightarrow (0 \le c_1g \le f \le c_2g)(n)\)</p>
+<p>Более подробное описание терминов <a href="https://ru.wikipedia.org/wiki/«O»_большое_и_«o»_малое#.D0.94.D1.80.D1.83.D0.B3.D0.B8.D0.B5_.D0.BF.D0.BE.D0.B4.D0.BE.D0.B1.D0.BD.D1.8B.D0.B5_.D0.BE.D0.B1.D0.BE.D0.B7.D0.BD.D0.B0.D1.87.D0.B5.D0.BD.D0.B8.D1.8F">на википедии</a>.</p>
+<p>Стоит заметить, что <em>«О»</em> задают класс функций.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>Сортировка выбором (selection sort)</h2>
+<p>В представлении не нуждается, работает за \(O(n^2) \), есть стабильный вариант.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">selection_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c"># Нестабильный вариант</span>
+    <span class="c"># Обратите внимание, что эта функция является</span>
+    <span class="c"># модификативной (in-place) и использует O(1) дополнительной памяти.</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]:</span>
+                <span class="nb">max</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">a</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h2>Сортировка вставками (insertion sort)</h2>
 <p>Устойчивая сортировка, эффективная на небольших объемах данных.</p>
 <p>На каждом шаге элемент перемещается назад по массиву до тех пор, пока
-перед ним находится больший элемент.</p>
+перед ним находится больший элемент. Таким образом у нас есть
+начало массива, отсортированное на предыдущих шагах и элемент
+на <em>i</em>-м месте, который нужно поместить в отсортированную часть так,
+чтобы она осталась отсортированной.</p>
 <p>«Данный алгоритм можно ускорить при помощи использования
 бинарного поиска для нахождения места текущему элементу в
 отсортированной части. Проблема с долгим сдвигом массива вправо
-решается при помощи смены указателей» — Википедия</p>
+решается при помощи смены указателей»&nbsp;— Википедия</p>
 <p><strong>Время работы:</strong></p>
 <p>\(O(n^2) \) в худшем случае: входной массив отсортирован в порядке,
-обратном нужному.</p>
-<p>\(O(n) \) в лучшем: массив уже отсортирован.</p>
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+обратном нужному, на каждом участке цикла по <em>i</em> происходит
+<em>i</em> операций в цикле по <em>k</em>.</p>
+<p>\(O(n) \) в лучшем: массив уже отсортирован,
+на каждом участке цикла по <em>i</em> происходит \( O(1)\) операций.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="c"># Как и `selection_sort`, in-place функция</span>
+    <span class="c"># использует O(1) дополнительной памяти.</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
-                <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">break</span>
     <span class="k">return</span> <span class="n">a</span></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
-	<div class='section' id='section-4'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-4'>#</a>
-			</div>
-			
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
-	<div class='section' id='section-5'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-5'>#</a>
-			</div>
-			<h2>Сортировка слиянием (merge sort)</h2>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <h2>Сортировка слиянием (merge sort)</h2>
 <p>Алгоритм рекурсивный: на каждом шаге мы разделяем массив
 на две части и сортируем каждую отдельно (тем же самым алгоритмом),
 после чего сливаем две части вместе.</p>
+<p>У этой сортировки проблема с памятью&nbsp;— ее требуется \( O(n)\)
+при нормальной реализации.</p>
 <p><strong>Время работы</strong> \(O(n \log n) \).</p>
-<p>Если время работы алгоритма на массиве длинны \(n \) — \(T[n] \),
+<p>Если время работы алгоритма на массиве длинны \(n \)&nbsp;— \(T[n] \),
 то по определению справедливо рекуррентное соотношение
 \(T[n] = 2T[n/2] + O(n) \): две сортировки массивов размера
 \(n/2 \) и еще n операций на слияние.</p>
 <p>Можно убедиться, что \(T[n] = O(n \log n) \), используя
 <a href="https://ru.wikipedia.org/wiki/Основная_теорема_о_рекуррентных_соотношениях">основную теорему о рекуррентных соотношениях</a>.</p>
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">a</span>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="c"># Часто insertion_sort показывает лучшие результаты</span>
+        <span class="c"># на небольших массивах.</span>
+        <span class="k">return</span> <span class="n">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c"># Стоит отслеживать глубину рекурсии и при необходимости</span>
         <span class="c"># сортировать части массива другим алгоритмом.</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:])</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
@@ -139,26 +224,101 @@
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">:]</span>
-        <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <h2>Быстрая сортировка (qsort)</h2>
+<p>Алгоритм быстрой сортировки&nbsp;— объединение идеи пузырьковой сортировки
+и сортировки слиянием.</p>
+<p>На каждом шаге мы выбираем «опорный элемент» («pivot element»),
+после чего переносим все элементы, меньшие опорного,&nbsp;— налево,
+большие&nbsp;— направо. После этой операции уже не нужно проводить слияние:
+все уже упорядочено нужным образом и массив разделен на три части.
+После этого мы запускаем сортировку на левой и правой части массива
+(центральную не трогаем).</p>
+<p><strong>Опорный элемент:</strong></p>
+<p>Выбор опорного элемента напрямую влияет на скорость алгоритма:
+самым оптимальным выбором будет медиана, самым худшим&nbsp;—
+выбор наименьшего элемента. Так как искать медиану без дополнительных
+элементов сложно, используют разные ухищрения: средний из максимального
+и минимального элемента, случайный элемент и т. д.</p>
+<p><strong>Время работы:</strong></p>
+<p>В in-place реализации выполняется в среднем за \(O(n \log n) \) и,
+в отличие от сортировки слиянием, не потребляет дополнительной памяти.</p>
+<p>При этом в худшем случае на каждом шаге мы имеем демение массива
+на отрезки [0] и [1, n), что ухудшает время до \(O(n^2) \).</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">quick_sort_inplace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c"># В качестве опорного элемента выбирается случайный.</span>
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">])</span>
+
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pivot</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="c"># Опять-таки, стоит отслеживать глубину рекурсии</span>
+        <span class="c"># и при необходимости сортировать части массива</span>
+        <span class="c"># другим алгоритмом.</span>
+        <span class="n">quick_sort_inplace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">quick_sort_inplace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">a</span>
 
 
-<span class="k">assert</span> <span class="p">(</span><span class="n">insertion_sort</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">==</span>
-        <span class="n">merge_sort</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="o">==</span>
-        <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
-	<div class='section' id='section-6'>
-		<div class='docs'>
-			<div class='octowrap'>
-				<a class='octothorpe' href='#section-6'>#</a>
-			</div>
-			
-		</div>
-		<div class='code'>
-			<div class="highlight"><pre></pre></div>
-		</div>
-	</div>
-	<div class='clearall'></div>
+<span class="k">def</span> <span class="nf">quick_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c"># Пример реализации с использованием списковых сборок.</span>
+    <span class="c"># Красиво, компактно, но памяти используется больше.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">a</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">quick_sort</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">])</span> <span class="o">+</span>
+                <span class="p">[</span><span class="n">pivot</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">pivot</span><span class="p">)</span> <span class="o">+</span>
+                <span class="n">quick_sort</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">pivot</span><span class="p">]))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
 </div>
 </body>
