@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>speedtest.py</title>
+  <link rel="stylesheet" href="pycco.css">
+  
+  <!--MathJax for LaTeX formulas-->
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>speedtest.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">timeit</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <h2>Тестирование скорости</h2>
+<p>Input:</p>
+<ul>
+<li><code>functions</code>: Tuple of functions to be tested.
+    Format is <code>((name, _callable, max_n), ...)</code> where<ul>
+<li><code>name</code> is human-readable name to display,</li>
+<li><code>_callable</code> is a function _callable,</li>
+<li><code>max_n</code> is maximum input length. The _callable will not be tested
+    on arrays of length bigger than <code>max_n</code>.
+    Sets infinite if none.</li>
+</ul>
+</li>
+<li><code>range_set</code>: array with iterables to run with each test.
+    format is <code>((range, shuffler), ...)</code> where<ul>
+<li><code>range</code> is source array elements. For example range(n).</li>
+<li><code>shuffler</code> is a callable which runs before each test.
+    For example <code>lambda x: random.shuffle(list(x)) is None and x</code>
+    which shuffles elements in <code>x</code> and then returns it.</li>
+</ul>
+</li>
+<li><code>time_to_repeat</code>: Each test runs <code>time_to_repeat</code> times.</li>
+<li><code>output</code>: set <code>'csv'</code> so you can run is like <code>python test.py &gt; results.csv</code></li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">run_tests</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
+              <span class="n">range_set</span><span class="o">=</span><span class="p">(),</span>
+              <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+              <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">_range</span> <span class="ow">in</span> <span class="n">range_set</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;n;&#39;</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">functions</span><span class="p">)))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">shuffler</span> <span class="ow">in</span> <span class="n">_range</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+            <span class="n">tests</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">function</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">function</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">function</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">_callable</span><span class="p">,</span> <span class="n">max_n</span> <span class="o">=</span> <span class="n">function</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">max_n</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="n">max_n</span><span class="p">):</span>
+                    <span class="n">shuffler</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_callable</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+                    <span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">,</span>
+                                  <span class="n">t</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="n">time_to_repeat</span><span class="p">)</span>
+                                  <span class="o">/</span> <span class="n">time_to_repeat</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>
+                    <span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">),</span> <span class="n">tests</span><span class="p">)</span>
+                <span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;n = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s">&#39;n = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tests</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">)):</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#39;:</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.10f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">time</span><span class="p">,</span> <span class="s">&#39;sec&#39;</span><span class="p">)</span>
+
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;~&#39;</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;~&#39;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
