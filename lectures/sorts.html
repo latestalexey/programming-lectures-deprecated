@@ -320,5 +320,58 @@
     </div>
   </div>
   <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <h2>Сортировка кучей (heap sort, пирамидальная сортировка)</h2>
+<p>Описание скоро будет...</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">heap_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c"># FIXME</span>
+    <span class="c"># Тесты показывают, что этот алгоритм ужасен.</span>
+    <span class="c"># Возможно, у кого-то есть более быстрая реализация — пришлите, пожалуйста</span>
+
+    <span class="k">def</span> <span class="nf">l_ch</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="c"># Left child</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">r_ch</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="c"># Right child</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">push_down</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">):</span>
+        <span class="c"># `max_depth` нужна, чтобы не трогать отсортированную часть кучи</span>
+
+        <span class="n">get_gt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">else</span> <span class="n">j</span>
+
+        <span class="k">while</span> <span class="n">l_ch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_depth</span><span class="p">:</span>
+            <span class="c"># Выбираем элемент, на место которого нужно протолкнуть корень</span>
+            <span class="n">gt_ch</span> <span class="o">=</span> <span class="p">(</span><span class="n">get_gt</span><span class="p">(</span><span class="n">l_ch</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">r_ch</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                     <span class="k">if</span> <span class="n">r_ch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_depth</span> <span class="k">else</span>
+                     <span class="n">l_ch</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">gt_ch</span><span class="p">]:</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">gt_ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">gt_ch</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">i</span> <span class="o">=</span> <span class="n">gt_ch</span>
+
+    <span class="c"># Строим кучу</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">push_down</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+    <span class="c"># Сортируем кучу</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">push_down</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">a</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
 </div>
 </body>

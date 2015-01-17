@@ -236,3 +236,54 @@ def quick_sort(a):
         return (quick_sort([x for x in a if x < pivot]) +
                 [pivot] * a.count(pivot) +
                 quick_sort([x for x in a if x > pivot]))
+
+#d
+
+"""
+## Сортировка кучей (heap sort, пирамидальная сортировка)
+
+Описание скоро будет...
+
+"""
+def heap_sort(a):
+    # FIXME
+    # Тесты показывают, что этот алгоритм ужасен.
+    # Возможно, у кого-то есть более быстрая реализация — пришлите, пожалуйста
+
+    def l_ch(i):
+        # Left child
+        return i * 2 + 1
+
+    def r_ch(i):
+        # Right child
+        return i * 2 + 2
+
+    def push_down(i, max_depth):
+        # `max_depth` нужна, чтобы не трогать отсортированную часть кучи
+
+        get_gt = lambda i, j: i if a[i] > a[j] else j
+
+        while l_ch(i) < max_depth:
+            # Выбираем элемент, на место которого нужно протолкнуть корень
+            gt_ch = (get_gt(l_ch(i), r_ch(i))
+                     if r_ch(i) < max_depth else
+                     l_ch(i))
+
+            if a[i] < a[gt_ch]:
+                a[i], a[gt_ch] = a[gt_ch], a[i]
+            else:
+                break
+
+            i = gt_ch
+
+    # Строим кучу
+    for i in range((len(a) // 2) - 1, -1, -1):
+        push_down(i, len(a))
+
+    # Сортируем кучу
+    for i in range(len(a)-1, 0, -1):
+        a[i], a[0] = a[0], a[i]
+        push_down(0, i)
+
+    return a
+
