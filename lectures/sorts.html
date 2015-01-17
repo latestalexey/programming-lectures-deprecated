@@ -36,7 +36,7 @@
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
       <p><strong>Оценка сложности алгоритмов, сортировки</strong></p>
-<p>Материалы: лекция 1 (13.01), семинар 2 (15.01).</p>
+<p>Материалы: лекция 1 (13.01), 2 (16.05), семинар 2 (15.01).</p>
 <p>Лектор: Объедков Сергей Александрович<br>
 Семинарист: Макаров Илья Андреевич<br>
 Конспектировал Гончаров Владимир</p>
@@ -105,7 +105,7 @@
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">selection_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="c"># Нестабильный вариант</span>
     <span class="c"># Обратите внимание, что эта функция является</span>
-    <span class="c"># модификативной (in-place) и использует O(1) дополнительной памяти.</span>
+    <span class="c"># модификативной (in place) и использует O(1) дополнительной памяти.</span>
     <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="nb">max</span> <span class="o">=</span> <span class="mi">0</span>
@@ -157,7 +157,7 @@
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="c"># Как и `selection_sort`, in-place функция</span>
+    <span class="c"># Как и `selection_sort`, in place функция</span>
     <span class="c"># использует O(1) дополнительной памяти.</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -191,8 +191,6 @@
 <p>Алгоритм рекурсивный: на каждом шаге мы разделяем массив
 на две части и сортируем каждую отдельно (тем же самым алгоритмом),
 после чего сливаем две части вместе.</p>
-<p>У этой сортировки проблема с памятью&nbsp;— ее требуется \( O(n)\)
-при нормальной реализации.</p>
 <p><strong>Время работы</strong> \(O(n \log n) \).</p>
 <p>Если время работы алгоритма на массиве длинны \(n \)&nbsp;— \(T[n] \),
 то по определению справедливо рекуррентное соотношение
@@ -209,8 +207,6 @@
         <span class="c"># на небольших массивах.</span>
         <span class="k">return</span> <span class="n">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c"># Стоит отслеживать глубину рекурсии и при необходимости</span>
-        <span class="c"># сортировать части массива другим алгоритмом.</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:])</span>
 
@@ -250,26 +246,48 @@
 и сортировки слиянием.</p>
 <p>На каждом шаге мы выбираем «опорный элемент» («pivot element»),
 после чего переносим все элементы, меньшие опорного,&nbsp;— налево,
-большие&nbsp;— направо. После этой операции уже не нужно проводить слияние:
-все уже упорядочено нужным образом и массив разделен на три части.
-После этого мы запускаем сортировку на левой и правой части массива
-(центральную не трогаем).</p>
+большие&nbsp;— направо. После этого мы запускаем сортировку на левой
+и правой части массива (центральную не трогаем). Заметим, что после
+этой операции не нужно проводить слияние.</p>
 <p><strong>Опорный элемент:</strong></p>
 <p>Выбор опорного элемента напрямую влияет на скорость алгоритма:
 самым оптимальным выбором будет медиана, самым худшим&nbsp;—
-выбор наименьшего элемента. Так как искать медиану без дополнительных
-элементов сложно, используют разные ухищрения: средний из максимального
-и минимального элемента, случайный элемент и т. д.</p>
+выбор наименьшего или наибольшего элемента. Так как искать медиану
+без дополнительных элементов сложно, используют разные ухищрения:
+средний из максимального и минимального элемента, случайный элемент,
+медиана из первого, среднего и последнего элемента и т. д.</p>
 <p><strong>Время работы:</strong></p>
-<p>В in-place реализации выполняется в среднем за \(O(n \log n) \) и,
-в отличие от сортировки слиянием, не потребляет дополнительной памяти.</p>
-<p>При этом в худшем случае на каждом шаге мы имеем демение массива
-на отрезки [0] и [1, n), что ухудшает время до \(O(n^2) \).</p>
+<p>В in place реализации выполняется в среднем за \(O(n \log n) \).</p>
+<p>При этом в худшем случае, когда в качестве опорного элемента
+выбирается минимальный или максимальный элемент,
+на каждом шаге мы имеем деление массива
+на отрезки [0] и [1, n) за \(n - 1 \) операцию обмена,
+что ухудшает время до \(O(n^2) \).</p>
+<p>Средний случай подробнее:</p>
+<p>Средний, то есть «удачный» случай разделения — случай, когда
+опорный элемент близок к медиане. Если предположить, что он
+попадает в центральную чать массива (т. е. отстоит от медианы не более,
+чем на <em>0,25n</em>, вероятность чего составит 50% при случайном выборе элемента),
+глубина рекурсии составит не более, чем \(\log_{4/3} n\), и поскольку
+на каждом уровне рекурсии выполняется <em>n</em> операций, мы получаем оценку в
+\(O(n \log n) \).</p>
+<p><strong>Глубина рекурсии:</strong></p>
+<p>В худшем случае глубина рекурсии составляет \(O(n) \).
+Существует несколько выходов из ситуации. В их числе:</p>
+<ul>
+<li>Переход на другой вид сортировки при привышении лимита глубины
+    (см. <a href="https://ru.wikipedia.org/wiki/Introsort">introsort</a>)</li>
+<li>Перестройка алгоритма с использованием хвостовой рекурсии:
+    сортировать две полученные части массива в рамках одного вызова.
+    К примеру, вместо <code>left</code> и <code>right</code> передавать список вида
+    <code>[[left, middle], [middle, right]]</code> и сортировать отрезки в одном цикле.</li>
+</ul>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">quick_sort_inplace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span>
 
@@ -286,9 +304,6 @@
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
 
-        <span class="c"># Опять-таки, стоит отслеживать глубину рекурсии</span>
-        <span class="c"># и при необходимости сортировать части массива</span>
-        <span class="c"># другим алгоритмом.</span>
         <span class="n">quick_sort_inplace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">quick_sort_inplace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
 
