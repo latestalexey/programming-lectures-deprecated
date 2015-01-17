@@ -39,9 +39,9 @@
     $ pycco sources/*.py -d lectures/
 
 
-[l1]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html
-[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-2
-[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-4
-[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-6
-[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-8
-[l1.5]: http://amatanhead.github.io/Programming-lectures/lectures/lecture1.html#section-10
+[l1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html
+[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-2
+[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-4
+[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-6
+[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-8
+[l1.5]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-10
