@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>speedtest.py</title>
+  <title>tests.py</title>
   <link rel="stylesheet" href="pycco.css">
   
   <!--MathJax for LaTeX formulas-->
@@ -15,7 +15,7 @@
 <div id='container'>
   <div id="background"></div>
   <div class='section'>
-    <div class='docs'><h1>speedtest.py</h1></div>
+    <div class='docs'><h1>tests.py</h1></div>
   </div>
   <div class='clearall'>
   <div class='section' id='section-0'>
@@ -62,10 +62,10 @@
 </ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">run_tests</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
-              <span class="n">range_set</span><span class="o">=</span><span class="p">(),</span>
-              <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-              <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">timetest</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
+             <span class="n">range_set</span><span class="o">=</span><span class="p">(),</span>
+             <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+             <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
     <span class="k">for</span> <span class="n">_range</span> <span class="ow">in</span> <span class="n">range_set</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>

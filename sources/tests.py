@@ -27,10 +27,10 @@ Input:
 *  `output`: set `'csv'` so you can run is like `python test.py > results.csv`
 
 """
-def run_tests(functions,
-              range_set=(),
-              time_to_repeat=10,
-              output=None):
+def timetest(functions,
+             range_set=(),
+             time_to_repeat=10,
+             output=None):
 
     for _range in range_set:
         if output == 'csv':

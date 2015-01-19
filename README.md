@@ -7,7 +7,7 @@ __Ведущий:__ Объедков Сергей Александрович
 ВШЭ, ФКН, ПМИ, 2015 (1 курс II поток)
 
 
-## Небольшая аннотация
+## Небольшая аннотация и отказ от ответственности
 
 Материал, представленный здесь, является объединением
 конспектов с лекций и семинаров.
@@ -38,6 +38,7 @@ __Ведущий:__ Объедков Сергей Александрович
     *   [Сортировка слиянием (merge sort)][l1.4]
     *   [Быстрая сортировка (qsort)][l1.5]
     *   [Сортировка кучей (heap sort, пирамидальная сортировка)][l1.6]
+    *   [Проверка времени выполнения][l1.7]
 
 
 ## Сборка
@@ -69,3 +70,4 @@ __Ведущий:__ Объедков Сергей Александрович
 [l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-8
 [l1.5]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-10
 [l1.6]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-12
+[l1.7]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-14

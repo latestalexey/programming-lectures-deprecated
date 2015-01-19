@@ -43,7 +43,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">speedtest</span></pre></div>
+<span class="kn">import</span> <span class="nn">tests</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -263,7 +263,7 @@
 на каждом шаге мы имеем деление массива
 на отрезки [0] и [1, n) за \(n - 1 \) операцию обмена,
 что ухудшает время до \(O(n^2) \).</p>
-<p>Средний случай подробнее:</p>
+<p><strong>Средний случай подробнее:</strong></p>
 <p>Средний, то есть «удачный» случай разделения — случай, когда
 опорный элемент близок к медиане. Если предположить, что он
 попадает в центральную чать массива (т. е. отстоит от медианы не более,
@@ -341,7 +341,32 @@
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <h2>Сортировка кучей (heap sort, пирамидальная сортировка)</h2>
-<p>Описание скоро будет...</p>
+<p>Как известно, идеально сбалансированное бинарное дерево
+может быть записано в массив размера <em>n</em>.
+Heap sort использует бинарное сортирующее дерево, свойства которого
+таковы: каждый родитель не меньше своего потомка.</p>
+<p>Алгоритм сначала строит на базе массива сортирующее дерево,
+а потом, собственно, сортирует.</p>
+<p>Анимация всего процесса
+<a href="http://www.youtube.com/watch?v=R6x7OuF_dYM#t=11">на youtube</a>
+(качество плохое, но лучше я не нашел).</p>
+<p>Часть 1: Построение кучи. Начиная с конца предпоследнего уровня
+двигаемся к началу, на каждом шаге пытаясь «протолкнуть» элемент ниже:
+если больший потомок меньше родителя, меняем их местами,
+и так спускаемся в кучу до тех пор, пока не обнаружим, что оба
+потомка больше родителя или что дальше двигаться нельзя (нижний уровень).
+В результате этих операций наибольший элемент окажется наверху.</p>
+<p>Часть 2: Меняем местами наибольший элемент с последним. Его больше трогать
+не нужно, он на своем месте. Теперь наибольший стоит в конце,
+а тот, что стоит в корне мы пропихиваем вниз,
+в результате чего в корне оказывается второй по величине элемент.
+Переставляем его в конец и повторяем операцию. Так потихоньку массив
+отсортируется.</p>
+<p>На каждом шаге мы <em>n</em> элементов проталкиваем на глубину не большую,
+чем \(\log n \). Так мы получаем гарантированную оценку сложности
+\(O(n\log n) \), однако проблема в том, что эта штука всегда работает
+за \(O(n\log n) \), даже если ей дать уже отсортированный массив.
+Из-за этого она проигрывает по скорости многим другим сортировкам.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">heap_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
@@ -385,6 +410,128 @@
         <span class="n">push_down</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">a</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <h2>Тестирование сортировок</h2>
+<p><a href="tests.html">tests.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">functions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s">&#39;Selection sort&#39;</span><span class="p">,</span> <span class="n">selection_sort</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;Insertion sort&#39;</span><span class="p">,</span> <span class="n">insertion_sort</span><span class="p">,</span> <span class="mi">10000</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;Merge sort&#39;</span><span class="p">,</span> <span class="n">merge_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;Qsort in place&#39;</span><span class="p">,</span> <span class="n">quick_sort_inplace</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;Quick sort&#39;</span><span class="p">,</span> <span class="n">quick_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;Heap sort&#39;</span><span class="p">,</span> <span class="n">heap_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">own</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">own</span> <span class="o">==</span> <span class="n">expected</span>
+    <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Output:&#39;</span><span class="p">,</span> <span class="n">own</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Expected:&#39;</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s">&#39;ERROR! &#39;</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="s">&#39; is incorrect!&#39;</span><span class="p">)</span>
+
+
+<span class="c"># Тест на случайно упорядоченных массивах</span>
+<span class="n">shuffle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">x</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">timetest</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
+                    <span class="n">range_set</span><span class="o">=</span><span class="p">([(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">510000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)]</span>
+                               <span class="p">),</span>
+                    <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">output</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">)</span>
+
+
+<span class="c"># Тест на уже отсортированных массивах</span>
+<span class="c"># Insertion sort должна показать лучший результат,</span>
+<span class="c"># так что уберем все ограничения</span>
+<span class="n">functions</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="n">tests</span><span class="o">.</span><span class="n">timetest</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
+                    <span class="n">range_set</span><span class="o">=</span><span class="p">([(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">510000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)]</span>
+                               <span class="p">),</span>
+                    <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">output</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">)</span>
+
+
+<span class="c"># Тест на развернутых отсортированных массивах</span>
+<span class="c"># Insertion sort должна показать худший результат,</span>
+<span class="c"># так что ограничим `n &lt;= 1000`</span>
+<span class="n">functions</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">tests</span><span class="o">.</span><span class="n">timetest</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
+                    <span class="n">range_set</span><span class="o">=</span><span class="p">([(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">reversed</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">reversed</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">reversed</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)],</span>
+                               <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">reversed</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">510000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)]</span>
+                               <span class="p">),</span>
+                    <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">output</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
