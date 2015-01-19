@@ -337,10 +337,15 @@ def heap_sort(a):
 #d
 
 """
-
 ## Тестирование сортировок
 
 [[tests.py]]
+
+__Тест на случайно упорядоченных массивах:__
+
+![Test 1](../images/sorts_t1.png)
+![Test 2](../images/sorts_t2.png)
+![Test 3](../images/sorts_t3.png)
 
 """
 functions = [
@@ -375,7 +380,7 @@ tests.timetest(functions,
                                [(range(n), shuffle)
                                 for n in range(0, 105000, 5000)],
                                [(range(n), shuffle)
-                                for n in range(0, 510000, 10000)]
+                                for n in range(0, 510000, 10000)],
                                ),
                     time_to_repeat=10,
                     output='csv')
@@ -393,8 +398,6 @@ tests.timetest(functions,
                                 for n in range(0, 10100, 100)],
                                [(range(n), lambda x: x)
                                 for n in range(0, 105000, 5000)],
-                               [(range(n), lambda x: x)
-                                for n in range(0, 510000, 10000)]
                                ),
                     time_to_repeat=10,
                     output='csv')
@@ -412,8 +415,6 @@ tests.timetest(functions,
                                 for n in range(0, 10100, 100)],
                                [(range(n), reversed)
                                 for n in range(0, 105000, 5000)],
-                               [(range(n), reversed)
-                                for n in range(0, 510000, 10000)]
                                ),
                     time_to_repeat=10,
                     output='csv')
