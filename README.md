@@ -1,6 +1,8 @@
 # Конспекты лекций по предмету «алгоритмы и структуры данных»
 
-__Ведущий:__ Объедков Сергей Александрович
+__Лектор:__ Объедков Сергей Александрович
+
+__Семинарист:__ Макаров Илья Андреевич
 
 Конспектировал Гончаров Владимир
 
@@ -31,14 +33,20 @@ __Ведущий:__ Объедков Сергей Александрович
 
 ## Содержание
 
-*   [1: Оценка сложности алгоритмов, сортировки][l1]
-    *   [Оценка сложности алгоритмов][l1.1]
-    *   [Сортировка выбором (selection sort)][l1.2]
-    *   [Сортировка вставками (insertion sort)][l1.3]
-    *   [Сортировка слиянием (merge sort)][l1.4]
-    *   [Быстрая сортировка (qsort)][l1.5]
-    *   [Сортировка кучей (heap sort, пирамидальная сортировка)][l1.6]
-    *   [Проверка времени выполнения][l1.7]
+*   [1: Оценка сложности алгоритмов, время сортировок и основная теорема о рекуррентных соотношениях][l1]
+    *    [Оценка сложности алгоритмов][l1.1]
+    *    [Время сортировок][l1.2]
+    *    [Разделяй и властвуй][l1.3]
+    *    [Основная теорема о рекуррентных соотношениях (master theorem)][l1.4]
+*   [2: Cортировки][l2]
+    *   [Сортировка выбором (selection sort)][l2.1]
+    *   [Сортировка вставками (insertion sort)][l2.2]
+    *   [Сортировка слиянием (merge sort)][l2.3]
+    *   [Быстрая сортировка (qsort)][l2.4]
+    *   [Сортировка кучей (heap sort, пирамидальная сортировка)][l2.5]
+    *   [Проверка времени выполнения][l2.6]
+*   Утилиты
+    *   [Тесты][utilities.tests]
 
 
 ## Сборка
@@ -63,11 +71,18 @@ __Ведущий:__ Объедков Сергей Александрович
     $ pycco sources/*.py -d lectures/
 
 
-[l1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html
-[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-2
-[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-4
-[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-6
-[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-8
-[l1.5]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-10
-[l1.6]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-12
-[l1.7]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-14
+[l1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html
+[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-2
+[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-4
+[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-6
+[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-8
+
+[l2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html
+[l2.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-2
+[l2.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-4
+[l2.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-6
+[l2.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-8
+[l2.5]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-10
+[l2.6]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-12
+
+[utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html
