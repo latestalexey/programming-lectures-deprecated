@@ -72,10 +72,10 @@ __Семинарист:__ Макаров Илья Андреевич
 
 
 [l1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html
-[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-2
-[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-4
-[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-6
-[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-8
+[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-3
+[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-5
+[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-7
+[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-9
 
 [l2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html
 [l2.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-2
