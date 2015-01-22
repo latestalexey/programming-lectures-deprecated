@@ -324,10 +324,36 @@ Heap sort использует бинарное сортирующее дере�
 Из-за этого она проигрывает по скорости многим другим сортировкам.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">heap_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="c"># FIXME</span>
-    <span class="c"># Тесты показывают, что этот алгоритм ужасен.</span>
-    <span class="c"># Возможно, у кого-то есть более быстрая реализация — пришлите, пожалуйста</span>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">):</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="nb">max</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">if</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="n">max_depth</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+        <span class="nb">max</span> <span class="o">=</span> <span class="n">right</span>
+    <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">max_depth</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]:</span>
+        <span class="nb">max</span> <span class="o">=</span> <span class="n">left</span>
+    <span class="k">if</span> <span class="nb">max</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]</span>
+        <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+        <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">heap_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c"># Новая реализация heapsort</span>
+    <span class="c"># Алексей Башлыков</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span>
+
+<span class="k">def</span> <span class="nf">old_slow_heap_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c">#  Старая реализация — медленна и убога...</span>
 
     <span class="k">def</span> <span class="nf">l_ch</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
         <span class="c"># Left child</span>
@@ -400,6 +426,7 @@ Heap sort использует бинарное сортирующее дере�
     <span class="p">[</span><span class="s">&#39;Qsort in place&#39;</span><span class="p">,</span> <span class="n">quick_sort_inplace</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
     <span class="p">[</span><span class="s">&#39;Quick sort&#39;</span><span class="p">,</span> <span class="n">quick_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
     <span class="p">[</span><span class="s">&#39;Heap sort&#39;</span><span class="p">,</span> <span class="n">heap_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">&#39;Old heap sort&#39;</span><span class="p">,</span> <span class="n">old_slow_heap_sort</span><span class="p">,</span> <span class="mi">100000</span><span class="p">],</span>
 <span class="p">]</span>
 
 <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>

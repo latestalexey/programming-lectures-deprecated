@@ -253,10 +253,36 @@ Heap sort использует бинарное сортирующее дере�
 Из-за этого она проигрывает по скорости многим другим сортировкам.
 
 """
+def heapify(a, i, max_depth):
+    left = 2 * i + 1
+    right = 2*i + 2
+    max = i
+    if right < max_depth and a[right] > a[i]:
+        max = right
+    if left < max_depth and a[left] > a[max]:
+        max = left
+    if max != i:
+        tmp = a[i]
+        a[i] = a[max]
+        a[max] = tmp
+        heapify(a, max, max_depth)
+
 def heap_sort(a):
-    # FIXME
-    # Тесты показывают, что этот алгоритм ужасен.
-    # Возможно, у кого-то есть более быстрая реализация — пришлите, пожалуйста
+    # Новая реализация heapsort
+    # Алексей Башлыков
+
+    for i in range(len(a) // 2, -1, -1):
+        heapify(a, i, len(a))
+
+    size = len(a)
+    for i in range(len(a)-1, -1, -1):
+        a[0], a[i] = a[i], a[0]
+        size -= 1
+        heapify(a, 0, size)
+    return a
+
+def old_slow_heap_sort(a):
+    #  Старая реализация — медленна и убога...
 
     def l_ch(i):
         # Left child
@@ -316,6 +342,7 @@ functions = [
     ['Qsort in place', quick_sort_inplace, None],
     ['Quick sort', quick_sort, None],
     ['Heap sort', heap_sort, None],
+    ['Old heap sort', old_slow_heap_sort, 100000],
 ]
 
 for n, f, c in functions:
