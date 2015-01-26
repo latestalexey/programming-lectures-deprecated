@@ -45,6 +45,9 @@ __Семинарист:__ Макаров Илья Андреевич
     *   [Быстрая сортировка (qsort)][l2.4]
     *   [Сортировка кучей (heap sort, пирамидальная сортировка)][l2.5]
     *   [Проверка времени выполнения][l2.6]
+*   [3: Поиск медианы в произвольном массиве][l3]
+    *    [`k`-ая порядковая статистика][l3.1]
+    *    [Медиана медиан (Median of Medians, BFPRT)][l3.2]
 *   Утилиты
     *   [Тесты][utilities.tests]
 
@@ -84,5 +87,9 @@ __Семинарист:__ Макаров Илья Андреевич
 [l2.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-8
 [l2.5]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-10
 [l2.6]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-12
+
+[l3]: http://amatanhead.github.io/Programming-lectures/lectures/median.html
+[l3.1]: http://amatanhead.github.io/Programming-lectures/lectures/median.html#section-2
+[l3.2]: http://amatanhead.github.io/Programming-lectures/lectures/median.html#section-4
 
 [utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html

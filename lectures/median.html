@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>median.py</title>
+  <link rel="stylesheet" href="pycco.css">
+  
+  <!--MathJax for LaTeX formulas-->
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>median.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><strong>Поиск медианы в произвольном массиве</strong></p>
+<p>Материалы: лекция 23.01, семинар 26.01.</p>
+<p>Лектор: Объедков Сергей Александрович<br>
+Семинарист: Макаров Илья Андреевич<br>
+Конспектировал Гончаров Владимир</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">sorts</span> <span class="kn">import</span> <span class="n">insertion_sort</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <h2><code>k</code>-ая порядковая статистика</h2>
+<p>Пусть у нас есть массив <code>A</code>.
+\(k \)-ая порядковая статистика&nbsp;— это элемент <code>sorted(A)[k]</code>.
+Соответственно, медиана&nbsp;— <code>n // 2</code>-ая порядковая статистика.</p>
+<p>Для поиска порядковых статистик существует два алгоритма, оба похожи на qsort.
+Различаются они лишь выбором опорного элемента.</p>
+<p>Суть:</p>
+<p>Выбираем опорный элемент, применяем partition.
+Если <code>k == i = partition(a)</code>, мы нашли нашу статистику, если нет&nbsp;—
+применяем алгоритм к нужной половине, модифицируя k.</p>
+<pre><code>После применения partition:
+
+|    &lt; p    |p|    &gt; p    |
+             ^
+             i
+</code></pre>
+<p>Если  K &lt; i, запускаем алгоритм на массиве <code>[0, i)</code> и ищем <code>k</code>-ю статистику.
+Если  K &gt; i, запускаем алгоритм на массиве <code>(i, n)</code>
+и ищем <code>k - i - 1</code>-ю статистику.</p>
+<p>Этот алгоритм конечен&nbsp;— на каждом шаге мы избавляемся хотябы от одного
+элемента, при этом время оценивается также, как у qsort,
+за тем лишь исключением, что мы спускаемся лишь по одной ветви рекурсии.
+Таким образом получаем худшее время&nbsp;— \(O(n^2) \),
+среднее&nbsp;— \(O(n) \).</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>Медиана медиан (Median of Medians, BFPRT)</h2>
+<p>Меньше, чем за \(O(n) \) найти статистику нельзя,
+потому что нужно посмотреть каждый элемент.</p>
+<p>Хочется стабилизировать наш алгоритм,
+чтобы он не деградировал до \(O(n^2) \).</p>
+<p>Будем на каждом шаге выбирать средний элемент.
+Тогда можно будет утверждать, что наша оценка <code>T[n] = T[n/2] + O(n) = O(n)</code>.
+Но расчитать центральный элемент&nbsp;— это и есть найти медиану,
+в неупорядоченном массиве это сложно =) Тогда будем брать элемент,
+близкий к медиане.</p>
+<p>Для этого поступим следующим образом:</p>
+<ul>
+<li>Разделим входной массив на части по 5 элементов (получится <code>n // 5</code> частей)</li>
+<li>Каждую отсортируем (так как части имеют фиксированный размер,
+    считаем, что сортировка проходит за \(O(1) \))</li>
+<li>Теперь в каждой части выберем медиану и соберем медианы
+    в начале массива. На это уйдет \(O(n) \) операций.
+    То, что осталось в конце массива (если его длинна не кратна 5), оставим.</li>
+<li>Теперь рекурсивно запустим наш алгоритм на начале массива
+    (первые <code>n // 5</code> элементов) и найдем-таки элемент,
+    составляющий медиану из выбранных ранее медиан (<code>n // 10</code>-я статистика).</li>
+</ul>
+<p>Заметим теперь, что хотябы 30% элементов в массиве
+не больше медианы медиан и 30%&nbsp;— не меньше.</p>
+<p>Тогда если выбрать ее в качестве опоры для разделения,
+хотябы 30% элементов окажутся левее и хотябы 30%&nbsp;— правее.
+Значит в худшем случае время работы алгоритма&nbsp;—
+\(T[n] \le T[n/5] + T[7n/10] + O(n) \).</p>
+<p>Оценим эту формулу. Попробуем понять, верно ли, что она линейная.
+Для этого явно выразим \(O(n) = ln \), подставим это выражение в
+формулу и попробуем найти \(l \).</p>
+<p>\(
+T[n] \le T[n/5] + T[7n/10] + O(n) \le \\
+    \le O(n) + \frac 15 \cdot ln + \frac 7{10} \cdot ln
+    = O(n) + \frac 9{10} ln = ln
+\)</p>
+<p>Видно, что при \(l = 10 \cdot O(n) = O(n) \) формула работает.</p>
+<p>Таким образом мы получили алгоритм,
+ищущий медиану гарантированно за \(O(n) \).
+Проблема лишь в том, что на практике первый алгоритм с рандомом быстрее.</p>
+<p>Подробнее про этот алгоритм можно почитать
+<a href="http://habrahabr.ru/post/247053/">на хабре</a></p>
+<p>P.S. Ели делить не на 5 элементов, будет фейл&nbsp;—
+мы не сможем подобрать \(l \).</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># Не самая удачная реализация, но работает, и ладно.</span>
+
+    <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pivot_index</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="n">partitions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">left</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">pivot_index</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">elif</span> <span class="n">pivot_index</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">partitions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">pivot_index</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">elif</span> <span class="n">pivot_index</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">partitions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">partitions</span>
+
+<span class="k">def</span> <span class="nf">median_of_medians</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c"># Нам нужна `k`-я статистика</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="k">assert</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span>
+    <span class="k">if</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">left</span> <span class="o">+</span> <span class="n">k</span>
+
+    <span class="c"># Делим все на подмассивы по 5 частей</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">5</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">left</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">blocks</span><span class="p">):</span>
+        <span class="n">insertion_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">b</span> <span class="o">+=</span> <span class="mi">3</span>
+
+    <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">median_of_medians</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">left</span> <span class="o">+</span> <span class="n">blocks</span><span class="p">,</span>
+                                    <span class="n">blocks</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">pivot_index</span><span class="p">)</span>
+
+    <span class="n">size1</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">left</span>
+    <span class="n">size2</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">i</span>
+
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">size1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">median_of_medians</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">size1</span> <span class="o">+</span> <span class="n">size2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">median_of_medians</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span>
+                             <span class="n">k</span> <span class="o">-</span> <span class="n">size1</span> <span class="o">-</span> <span class="n">size2</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">expected</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">median_of_medians</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Output:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Expected:&#39;</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Input:&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s">&#39;ERROR! Median of medians is incorrect!&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

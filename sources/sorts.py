@@ -335,74 +335,75 @@ __Тест на случайно упорядоченных массивах:__
 ![Test 3](../images/sorts_t3.png)
 
 """
-functions = [
-    ['Selection sort', selection_sort, 1000],
-    ['Insertion sort', insertion_sort, 10000],
-    ['Merge sort', merge_sort, None],
-    ['Qsort in place', quick_sort_inplace, None],
-    ['Quick sort', quick_sort, None],
-    ['Heap sort', heap_sort, None],
-    ['Old heap sort', old_slow_heap_sort, 100000],
-]
+if __name__ == "__main__":
+    functions = [
+        ['Selection sort', selection_sort, 1000],
+        ['Insertion sort', insertion_sort, 10000],
+        ['Merge sort', merge_sort, None],
+        ['Qsort in place', quick_sort_inplace, None],
+        ['Quick sort', quick_sort, None],
+        ['Heap sort', heap_sort, None],
+        ['Old heap sort', old_slow_heap_sort, 100000],
+    ]
 
-for n, f, c in functions:
-    a = list(range(100)) + list(range(50))
-    random.shuffle(a)
-    own = f(a)
-    expected = sorted(list(range(100)) + list(range(50)))
-    try:
-        assert own == expected
-    except AssertionError:
-        print('Output:', own)
-        print('Expected:', expected)
-        raise AssertionError('ERROR! ' + n + ' is incorrect!')
-
-
-# Тест на случайно упорядоченных массивах
-shuffle = lambda x: random.shuffle(x) is None and x
-tests.timetest(functions,
-               range_set=([(range(n), shuffle)
-                           for n in range(0, 501, 1)],
-                          [(range(n), shuffle)
-                           for n in range(0, 10100, 100)],
-                          [(range(n), shuffle)
-                           for n in range(0, 105000, 5000)],
-                          ),
-               time_to_repeat=10,
-               output='csv')
+    for n, f, c in functions:
+        a = list(range(100)) + list(range(50))
+        random.shuffle(a)
+        result = f(a)
+        expected = sorted(list(range(100)) + list(range(50)))
+        try:
+            assert result == expected
+        except AssertionError:
+            print('Output:', result)
+            print('Expected:', expected)
+            raise AssertionError('ERROR! ' + n + ' is incorrect!')
 
 
-# # Тест на уже отсортированных массивах
-# # Insertion sort должна показать лучший результат,
-# # так что уберем все ограничения
-# functions[1][2] = None
-
-# tests.timetest(functions,
-#                range_set=([(range(n), lambda x: x)
-#                            for n in range(0, 501, 1)],
-#                           [(range(n), lambda x: x)
-#                            for n in range(0, 10100, 100)],
-#                           [(range(n), lambda x: x)
-#                            for n in range(0, 105000, 5000)],
-#                           ),
-#                time_to_repeat=10,
-#                output='csv')
+    # Тест на случайно упорядоченных массивах
+    shuffle = lambda x: random.shuffle(x) is None and x
+    tests.timetest(functions,
+                   range_set=([(range(n), shuffle)
+                               for n in range(0, 501, 1)],
+                              [(range(n), shuffle)
+                               for n in range(0, 10100, 100)],
+                              [(range(n), shuffle)
+                               for n in range(0, 105000, 5000)],
+                              ),
+                   time_to_repeat=10,
+                   output='csv')
 
 
-# # Тест на развернутых отсортированных массивах
-# # Insertion sort должна показать худший результат,
-# # так что ограничим `n <= 1000`
-# functions[1][2] = 1000
+    # # Тест на уже отсортированных массивах
+    # # Insertion sort должна показать лучший результат,
+    # # так что уберем все ограничения
+    # functions[1][2] = None
 
-# tests.timetest(functions,
-#                range_set=([(range(n), reversed)
-#                            for n in range(0, 501, 1)],
-#                           [(range(n), reversed)
-#                            for n in range(0, 10100, 100)],
-#                           [(range(n), reversed)
-#                            for n in range(0, 105000, 5000)],
-#                           ),
-#                time_to_repeat=10,
-#                output='csv')
+    # tests.timetest(functions,
+    #                range_set=([(range(n), lambda x: x)
+    #                            for n in range(0, 501, 1)],
+    #                           [(range(n), lambda x: x)
+    #                            for n in range(0, 10100, 100)],
+    #                           [(range(n), lambda x: x)
+    #                            for n in range(0, 105000, 5000)],
+    #                           ),
+    #                time_to_repeat=10,
+    #                output='csv')
 
-# #d
+
+    # # Тест на развернутых отсортированных массивах
+    # # Insertion sort должна показать худший результат,
+    # # так что ограничим `n <= 1000`
+    # functions[1][2] = 1000
+
+    # tests.timetest(functions,
+    #                range_set=([(range(n), reversed)
+    #                            for n in range(0, 501, 1)],
+    #                           [(range(n), reversed)
+    #                            for n in range(0, 10100, 100)],
+    #                           [(range(n), reversed)
+    #                            for n in range(0, 105000, 5000)],
+    #                           ),
+    #                time_to_repeat=10,
+    #                output='csv')
+
+    # #d
