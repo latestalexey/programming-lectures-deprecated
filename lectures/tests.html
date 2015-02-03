@@ -53,7 +53,7 @@
 <li><code>range_set</code>: Массив из групп тестов.
     Каждая группа имеет формат: <code>((input, preparer), (input, preparer), ...)</code>,
     где<ul>
-<li><code>input</code> — данные, определяющие тест.</li>
+<li><code>_input</code> — данные, определяющие тест.</li>
 <li><code>preparer</code> — функция, принимающая на вход <code>input</code> и возвращающая список
     аргументов, которые будут переданы в тестируемую функцию.</li>
 </ul>
@@ -74,13 +74,13 @@
             <span class="k">print</span><span class="p">(</span><span class="s">&#39;n;&#39;</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">functions</span><span class="p">)))</span>
             <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="nb">input</span><span class="p">,</span> <span class="n">preparer</span> <span class="ow">in</span> <span class="n">_range</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_input</span><span class="p">,</span> <span class="n">preparer</span> <span class="ow">in</span> <span class="n">_range</span><span class="p">:</span>
 
             <span class="n">tests</span> <span class="o">=</span> <span class="p">[]</span>
 
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_callable</span><span class="p">,</span> <span class="n">denier</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">denier</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">denier</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
-                    <span class="n">input_args</span> <span class="o">=</span> <span class="n">preparer</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">denier</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">denier</span><span class="p">(</span><span class="n">_input</span><span class="p">):</span>
+                    <span class="n">input_args</span> <span class="o">=</span> <span class="n">preparer</span><span class="p">(</span><span class="n">_input</span><span class="p">)</span>
                     <span class="n">t</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_callable</span><span class="p">(</span><span class="o">*</span><span class="n">input_args</span><span class="p">))</span>
                     <span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">,</span>
                                   <span class="n">t</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="n">time_to_repeat</span><span class="p">)</span>
@@ -89,12 +89,12 @@
                     <span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">])</span>
 
             <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">_input</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span> <span class="o">+</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                     <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">),</span> <span class="n">tests</span><span class="p">)</span>
                 <span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;input = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s">&#39;n = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">input</span><span class="p">)))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;input = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">_input</span><span class="p">))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s">&#39;n = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">_input</span><span class="p">)))</span>
 
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tests</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">)):</span>
                     <span class="k">print</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#39;:</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.10f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">time</span><span class="p">,</span> <span class="s">&#39;sec&#39;</span><span class="p">)</span>

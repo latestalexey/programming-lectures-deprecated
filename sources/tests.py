@@ -21,7 +21,7 @@ from operator import itemgetter
 *  `range_set`: Массив из групп тестов.
     Каждая группа имеет формат: `((input, preparer), (input, preparer), ...)`,
     где
-    *   `input` — данные, определяющие тест.
+    *   `_input` — данные, определяющие тест.
     *   `preparer` — функция, принимающая на вход `input` и возвращающая список
         аргументов, которые будут переданы в тестируемую функцию.
 *   `time_to_repeat`: Каждый тест запускается `time_to_repeat` раз.
@@ -39,13 +39,13 @@ def timetest(functions,
             print('n;' + ';'.join(map(itemgetter(0), functions)))
             print('')
 
-        for input, preparer in _range:
+        for _input, preparer in _range:
 
             tests = []
 
             for name, _callable, denier in functions:
-                if denier is None or not denier(input):
-                    input_args = preparer(input)
+                if denier is None or not denier(_input):
+                    input_args = preparer(_input)
                     t = timeit.Timer(lambda: _callable(*input_args))
                     tests.append([name,
                                   t.timeit(number=time_to_repeat)
@@ -54,12 +54,12 @@ def timetest(functions,
                     tests.append([name, None])
 
             if output == 'csv':
-                print(str(input) + ';' + ';'.join(
+                print(str(_input) + ';' + ';'.join(
                     map(lambda x: str(x[1] or '').replace('.', ','), tests)
                 ))
             else:
-                print('input = ' + str(input))
-                print('=' * len('n = ' + str(input)))
+                print('input = ' + str(_input))
+                print('=' * len('n = ' + str(_input)))
 
                 for name, time in sorted(tests, key=itemgetter(1)):
                     print(name + ':\t', '%.10f' % time, 'sec')
