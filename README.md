@@ -48,8 +48,11 @@ __Семинарист:__ Макаров Илья Андреевич
 *   [3: Поиск медианы в произвольном массиве][l3]
     *    [`k`-ая порядковая статистика][l3.1]
     *    [Медиана медиан (Median of Medians, BFPRT)][l3.2]
+*   [4: Произведение чисел][l4]
+    *   [4: Произведение чисел, алгоритм Карацубы][l4.1]
 *   Утилиты
     *   [Тесты][utilities.tests]
+    *   [Простая длинная арифметика][utilities.mp_helpers]
 
 
 ## Сборка
@@ -92,4 +95,8 @@ __Семинарист:__ Макаров Илья Андреевич
 [l3.1]: http://amatanhead.github.io/Programming-lectures/lectures/median.html#section-2
 [l3.2]: http://amatanhead.github.io/Programming-lectures/lectures/median.html#section-4
 
+[l4]: http://amatanhead.github.io/Programming-lectures/lectures/product.html
+[l4.1]: http://amatanhead.github.io/Programming-lectures/lectures/product.html#section-2
+
 [utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html
+[utilities.mp_helpers]: http://amatanhead.github.io/Programming-lectures/lectures/mp_helpers.html
