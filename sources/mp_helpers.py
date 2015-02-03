@@ -1,8 +1,6 @@
 # coding: utf-8
 
 import random
-from copy import deepcopy
-
 
 """
 ## Класс для представления длинного числа
@@ -12,7 +10,6 @@ from copy import deepcopy
 алгоритмы работы с длинной арифметикой.
 
 """
-
 class BigInt(object):
 
     def clean(self):

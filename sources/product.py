@@ -14,7 +14,6 @@ __Произведение чисел__
 
 """
 
-import random
 from mp_helpers import BigInt
 
 """
@@ -70,7 +69,6 @@ from mp_helpers import BigInt
 \\(T[n] = 3T[n / 2] + \Theta(n) = O(n^{log_23}) \\)
 
 """
-
 def karatsuba_algorithm(a, b):
     if len(a) <= 2 or len(b) <= 2:
         return a * b
@@ -105,5 +103,5 @@ def karatsuba_algorithm(a, b):
 
         return (a0b0 +
                 ((karatsuba_algorithm((a0 + a1), (b0 + b1))
-                 - a0b0 - a1b1) << (m)) +
+                 - a0b0 - a1b1) << m) +
                 (a1b1 << (2 * m)))

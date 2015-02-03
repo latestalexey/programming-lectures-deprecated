@@ -63,11 +63,11 @@
     <span class="c"># модификативной (in place) и использует O(1) дополнительной памяти.</span>
     <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]:</span>
-                <span class="nb">max</span> <span class="o">=</span> <span class="n">j</span>
-        <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">maximum</span><span class="p">]:</span>
+                <span class="n">maximum</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">maximum</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">maximum</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">a</span></pre></div>
     </div>
@@ -326,17 +326,17 @@ Heap sort использует бинарное сортирующее дере�
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">):</span>
     <span class="n">left</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">right</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
-    <span class="nb">max</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="n">maximum</span> <span class="o">=</span> <span class="n">i</span>
     <span class="k">if</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="n">max_depth</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-        <span class="nb">max</span> <span class="o">=</span> <span class="n">right</span>
-    <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">max_depth</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]:</span>
-        <span class="nb">max</span> <span class="o">=</span> <span class="n">left</span>
-    <span class="k">if</span> <span class="nb">max</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="n">right</span>
+    <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">max_depth</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">maximum</span><span class="p">]:</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="n">left</span>
+    <span class="k">if</span> <span class="n">maximum</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]</span>
-        <span class="n">a</span><span class="p">[</span><span class="nb">max</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
-        <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">maximum</span><span class="p">]</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">maximum</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+        <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">heap_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="c"># Новая реализация heapsort</span>
@@ -346,7 +346,7 @@ Heap sort использует бинарное сортирующее дере�
         <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 
     <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
@@ -386,7 +386,7 @@ Heap sort использует бинарное сортирующее дере�
         <span class="n">push_down</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 
     <span class="c"># Сортируем кучу</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">push_down</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 
@@ -442,7 +442,6 @@ Heap sort использует бинарное сортирующее дере�
             <span class="k">print</span><span class="p">(</span><span class="s">&#39;Output:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
             <span class="k">print</span><span class="p">(</span><span class="s">&#39;Expected:&#39;</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s">&#39;ERROR! &#39;</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="s">&#39; is incorrect!&#39;</span><span class="p">)</span>
-
 
     <span class="c"># Тест на случайно упорядоченных массивах</span>
     <span class="k">def</span> <span class="nf">test_preparer</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>

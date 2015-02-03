@@ -28,11 +28,11 @@ def selection_sort(a):
     # модификативной (in place) и использует O(1) дополнительной памяти.
     i = len(a)
     while i > 1:
-        max = 0
+        maximum = 0
         for j in range(i):
-            if a[j] > a[max]:
-                max = j
-        a[i - 1], a[max] = a[max], a[i - 1]
+            if a[j] > a[maximum]:
+                maximum = j
+        a[i - 1], a[maximum] = a[maximum], a[i - 1]
         i -= 1
     return a
 
@@ -255,17 +255,17 @@ Heap sort использует бинарное сортирующее дере�
 """
 def heapify(a, i, max_depth):
     left = 2 * i + 1
-    right = 2*i + 2
-    max = i
+    right = 2 * i + 2
+    maximum = i
     if right < max_depth and a[right] > a[i]:
-        max = right
-    if left < max_depth and a[left] > a[max]:
-        max = left
-    if max != i:
+        maximum = right
+    if left < max_depth and a[left] > a[maximum]:
+        maximum = left
+    if maximum != i:
         tmp = a[i]
-        a[i] = a[max]
-        a[max] = tmp
-        heapify(a, max, max_depth)
+        a[i] = a[maximum]
+        a[maximum] = tmp
+        heapify(a, maximum, max_depth)
 
 def heap_sort(a):
     # Новая реализация heapsort
@@ -275,7 +275,7 @@ def heap_sort(a):
         heapify(a, i, len(a))
 
     size = len(a)
-    for i in range(len(a)-1, -1, -1):
+    for i in range(len(a) - 1, -1, -1):
         a[0], a[i] = a[i], a[0]
         size -= 1
         heapify(a, 0, size)
@@ -315,7 +315,7 @@ def old_slow_heap_sort(a):
         push_down(i, len(a))
 
     # Сортируем кучу
-    for i in range(len(a)-1, 0, -1):
+    for i in range(len(a) - 1, 0, -1):
         a[i], a[0] = a[0], a[i]
         push_down(0, i)
 
@@ -358,7 +358,6 @@ if __name__ == '__main__':
             print('Output:', result)
             print('Expected:', expected)
             raise AssertionError('ERROR! ' + n + ' is incorrect!')
-
 
     # Тест на случайно упорядоченных массивах
     def test_preparer(n):
