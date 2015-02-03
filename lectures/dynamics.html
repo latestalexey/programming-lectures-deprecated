@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>dynamics.py</title>
+  <link rel="stylesheet" href="pycco.css">
+  
+  <!--MathJax for LaTeX formulas-->
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>dynamics.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><strong>Динамическое программирование</strong></p>
+<p>Материалы: лекция 30.01, 03.02</p>
+<p>Лектор: Объедков Сергей Александрович<br>
+Семинарист: Макаров Илья Андреевич<br>
+Конспектировал Гончаров Владимир</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">tests</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <h2>Задача поиска двух ближайших точек</h2>
+<p>На вход подается массив координат точек. Найти две ближайшие.</p>
+<p>Случай, когда точки заданы одной координатой прост:
+сортируем и проходимся по всем точкам, рассматривая соседей.
+На все про все \(O(n\log n) \).</p>
+<p>Случай на плоскости уже интереснее.
+Для его решения поступим следующим образом.</p>
+<p>Первым делом отсортируем наш массив по координате \(x \) и \(y \)
+(На выходе получим два отсортированных массива;
+Время — \(O(n\log n) \)). Теперь мы запустим рекурсивную функцию,
+которая-то и вернет нам две ближайшие точки.</p>
+<p>В рекурсивной функции мы разделим массив точек на две части
+относительно медианы (за \(O(n) \)) и рекурсивно найдем в каждой из частей
+две ближайшие точки. Назовем кратчайшее расстояние,
+известное на данный момент, \(\delta \).</p>
+<p><img alt="Points 1" src="../images/dynamics_i1.png" /></p>
+<p>Осталось проверить, нету ли таких точек, которые лежат в разных половинах,
+и расстояние между ними короче, чем \(\delta \).
+Для этого рассмотрим любую точку и заметим вот что:
+если есть точка, расстояние до которой меньше, чем \(\delta \),
+она непременно должна лежать в прямоугольнике со сторонами
+\(\delta \) на \(2\delta \):</p>
+<p><img alt="Points 2" src="../images/dynamics_i2.png" /></p>
+<p>Но в таком прямоугольнике может уместиться не более шести точек, иначе
+расстояние между ними станет меньше \(\delta \) и возникнет противоречие.</p>
+<p>Тогда достаточно для каждой точки рассмотреть 6 следующих ее соседей
+в отсортированном по \(y \) массиве.</p>
+<p>Несложно убедиться, что время работы алгоритма
+\(T_{rec}[n] = 2T_{rec}[n / 2] + O(n) = O(n\log n) \),
+\(T[n] = O(n\log n) + T_{rec}[n] = O(n\log n) \)</p>
+<p><strong>Сравнение с обычным алгоритмом (T[n]):</strong></p>
+<p><img alt="Test 1" src="../images/dynamics_t1.png" /></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">distance_2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="c"># Квадрат расстояния между точками</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">closest_pair_bruteforce</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="c"># Алгоритм, работающий за O(n^2).</span>
+    <span class="c"># Нужен для выхода из рекурсии и для проверки</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+
+    <span class="n">min_dist</span> <span class="o">=</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">min_points</span> <span class="o">=</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">point1</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">point2</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">point1</span> <span class="o">!=</span> <span class="n">point2</span> <span class="ow">and</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
+                <span class="n">min_dist</span> <span class="o">=</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">)</span>
+                <span class="n">min_points</span> <span class="o">=</span> <span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">min_points</span>
+
+<span class="k">def</span> <span class="nf">closest_pair</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="c"># points = [(x1, y1), (x2, y2), ...]</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+
+    <span class="n">points_x</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">points_y</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">points_x</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">closest_pair_recursive</span><span class="p">(</span><span class="n">points_x</span><span class="p">,</span> <span class="n">points_y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">closest_pair_bruteforce</span><span class="p">(</span><span class="n">points_x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_x</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">points_x_l</span><span class="p">,</span> <span class="n">points_x_r</span> <span class="o">=</span> <span class="n">points_x</span><span class="p">[:</span><span class="n">mid</span><span class="p">],</span> <span class="n">points_x</span><span class="p">[</span><span class="n">mid</span><span class="p">:]</span>
+            <span class="n">points_y_l</span><span class="p">,</span> <span class="n">points_y_r</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points_y</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">points_x_l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">points_y_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">points_y_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+            <span class="n">l0</span><span class="p">,</span> <span class="n">l1</span> <span class="o">=</span> <span class="n">closest_pair_recursive</span><span class="p">(</span><span class="n">points_x_l</span><span class="p">,</span> <span class="n">points_y_l</span><span class="p">)</span>
+            <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">closest_pair_recursive</span><span class="p">(</span><span class="n">points_x_r</span><span class="p">,</span> <span class="n">points_y_r</span><span class="p">)</span>
+            <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">l0</span><span class="p">,</span> <span class="n">l1</span><span class="p">),</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">d1</span> <span class="o">&lt;</span> <span class="n">d2</span><span class="p">:</span>
+                <span class="n">min_dist</span> <span class="o">=</span> <span class="n">d1</span>
+                <span class="n">min_points</span> <span class="o">=</span> <span class="n">l0</span><span class="p">,</span> <span class="n">l1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">min_dist</span> <span class="o">=</span> <span class="n">d2</span>
+                <span class="n">min_points</span> <span class="o">=</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points_y</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">7</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_y</span><span class="p">))):</span>
+                    <span class="k">if</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">points_y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points_y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
+                        <span class="n">min_dist</span> <span class="o">=</span> <span class="n">distance_2</span><span class="p">(</span><span class="n">points_y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points_y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                        <span class="n">min_points</span> <span class="o">=</span> <span class="n">points_y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points_y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">min_points</span>
+
+    <span class="k">return</span> <span class="n">closest_pair_recursive</span><span class="p">(</span><span class="n">points_x</span><span class="p">,</span> <span class="n">points_y</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">generate_points</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">points</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">generate_points</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">closest_pair</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">closest_pair_bruteforce</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">distance_2</span><span class="p">(</span><span class="o">*</span><span class="n">p1</span><span class="p">)</span> <span class="o">==</span> <span class="n">distance_2</span><span class="p">(</span><span class="o">*</span><span class="n">p2</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Output:&#39;</span><span class="p">,</span> <span class="n">distance_2</span><span class="p">(</span><span class="o">*</span><span class="n">p1</span><span class="p">),</span> <span class="n">p1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Expected:&#39;</span><span class="p">,</span> <span class="n">distance_2</span><span class="p">(</span><span class="o">*</span><span class="n">p2</span><span class="p">),</span> <span class="n">p2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Input:&#39;</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;ERROR! Closest pair is incorrect!&#39;</span><span class="p">)</span>
+
+    <span class="n">functions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s">&#39;Closest pair&#39;</span><span class="p">,</span> <span class="n">closest_pair</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+        <span class="p">[</span><span class="s">&#39;Bruteforce&#39;</span><span class="p">,</span> <span class="n">closest_pair_bruteforce</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">250</span><span class="p">],</span>
+    <span class="p">]</span>
+
+    <span class="n">test_preparer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="p">[</span><span class="n">generate_points</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">tests</span><span class="o">.</span><span class="n">timetest</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
+                   <span class="n">range_set</span><span class="o">=</span><span class="p">([(</span><span class="n">n</span><span class="p">,</span> <span class="n">test_preparer</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                              <span class="p">),</span>
+                   <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                   <span class="n">output</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
