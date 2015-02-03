@@ -1,7 +1,7 @@
 # coding: utf-8
 
+import random
 from copy import deepcopy
-from random import randint
 
 
 """
@@ -203,33 +203,33 @@ class BigInt(object):
 if __name__ == '__main__':
     # Perform some tests on math operations
     for i in range(10000):
-        a = randint(-1000, 1000)
+        a = random.randint(-1000, 1000)
         assert str(-BigInt(a)) == str(-a)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) > BigInt(b)) == str(a > b)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) < BigInt(b)) == str(a < b)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) == BigInt(b)) == str(a == b)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) != BigInt(b)) == str(a != b)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) + BigInt(b)) == str(a + b)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) - BigInt(b)) == str(a - b)
 
     for i in range(10000):
-        a, b = randint(-1000, 1000), randint(-1000, 1000)
+        a, b = random.randint(-1000, 1000), random.randint(-1000, 1000)
         assert str(BigInt(a) * BigInt(b)) == str(a * b)

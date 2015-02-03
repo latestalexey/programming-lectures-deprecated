@@ -17,7 +17,6 @@ __Произведение чисел__
 import random
 from mp_helpers import BigInt
 
-
 """
 ## Алгоритм Карацубы
 
@@ -105,5 +104,6 @@ def karatsuba_algorithm(a, b):
         a1b1 = karatsuba_algorithm(a1, b1)
 
         return (a0b0 +
-                ((karatsuba_algorithm((a0 + a1), (b0 + b1)) - a0b0 - a1b1) << (m)) +
+                ((karatsuba_algorithm((a0 + a1), (b0 + b1))
+                 - a0b0 - a1b1) << (m)) +
                 (a1b1 << (2 * m)))

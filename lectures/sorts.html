@@ -413,21 +413,22 @@ Heap sort использует бинарное сортирующее дере�
       </div>
       <h2>Тестирование сортировок</h2>
 <p><a href="tests.html">tests.py</a></p>
-<p><strong>Тест на случайно упорядоченных массивах:</strong></p>
+<p><strong>Тест на случайно упорядоченных массивах (T[n]):</strong></p>
 <p><img alt="Test 1" src="../images/sorts_t1.png" />
 <img alt="Test 2" src="../images/sorts_t2.png" />
 <img alt="Test 3" src="../images/sorts_t3.png" /></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+      <div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">functions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s">&#39;Selection sort&#39;</span><span class="p">,</span> <span class="n">selection_sort</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
-        <span class="p">[</span><span class="s">&#39;Insertion sort&#39;</span><span class="p">,</span> <span class="n">insertion_sort</span><span class="p">,</span> <span class="mi">10000</span><span class="p">],</span>
+        <span class="c"># Название, тестируемая ф-я, ограничитель</span>
+        <span class="p">[</span><span class="s">&#39;Selection sort&#39;</span><span class="p">,</span> <span class="n">selection_sort</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">],</span>
+        <span class="p">[</span><span class="s">&#39;Insertion sort&#39;</span><span class="p">,</span> <span class="n">insertion_sort</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">],</span>
         <span class="p">[</span><span class="s">&#39;Merge sort&#39;</span><span class="p">,</span> <span class="n">merge_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
         <span class="p">[</span><span class="s">&#39;Qsort in place&#39;</span><span class="p">,</span> <span class="n">quick_sort_inplace</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
         <span class="p">[</span><span class="s">&#39;Quick sort&#39;</span><span class="p">,</span> <span class="n">quick_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
         <span class="p">[</span><span class="s">&#39;Heap sort&#39;</span><span class="p">,</span> <span class="n">heap_sort</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
-        <span class="p">[</span><span class="s">&#39;Old heap sort&#39;</span><span class="p">,</span> <span class="n">old_slow_heap_sort</span><span class="p">,</span> <span class="mi">100000</span><span class="p">],</span>
+        <span class="p">[</span><span class="s">&#39;Old heap sort&#39;</span><span class="p">,</span> <span class="n">old_slow_heap_sort</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">100000</span><span class="p">],</span>
     <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">:</span>
@@ -444,53 +445,21 @@ Heap sort использует бинарное сортирующее дере�
 
 
     <span class="c"># Тест на случайно упорядоченных массивах</span>
-    <span class="n">shuffle</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">x</span>
+    <span class="k">def</span> <span class="nf">test_preparer</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">array</span><span class="p">]</span>
+
     <span class="n">tests</span><span class="o">.</span><span class="n">timetest</span><span class="p">(</span><span class="n">functions</span><span class="p">,</span>
-                   <span class="n">range_set</span><span class="o">=</span><span class="p">([(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                   <span class="n">range_set</span><span class="o">=</span><span class="p">([(</span><span class="n">n</span><span class="p">,</span> <span class="n">test_preparer</span><span class="p">)</span>
                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
-                              <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                              <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">test_preparer</span><span class="p">)</span>
                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)],</span>
-                              <span class="p">[(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">shuffle</span><span class="p">)</span>
+                              <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">test_preparer</span><span class="p">)</span>
                                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)],</span>
                               <span class="p">),</span>
                    <span class="n">time_to_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                   <span class="n">output</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">)</span>
-
-
-    <span class="c"># # Тест на уже отсортированных массивах</span>
-    <span class="c"># # Insertion sort должна показать лучший результат,</span>
-    <span class="c"># # так что уберем все ограничения</span>
-    <span class="c"># functions[1][2] = None</span>
-
-    <span class="c"># tests.timetest(functions,</span>
-    <span class="c">#                range_set=([(range(n), lambda x: x)</span>
-    <span class="c">#                            for n in range(0, 501, 1)],</span>
-    <span class="c">#                           [(range(n), lambda x: x)</span>
-    <span class="c">#                            for n in range(0, 10100, 100)],</span>
-    <span class="c">#                           [(range(n), lambda x: x)</span>
-    <span class="c">#                            for n in range(0, 105000, 5000)],</span>
-    <span class="c">#                           ),</span>
-    <span class="c">#                time_to_repeat=10,</span>
-    <span class="c">#                output=&#39;csv&#39;)</span>
-
-
-    <span class="c"># # Тест на развернутых отсортированных массивах</span>
-    <span class="c"># # Insertion sort должна показать худший результат,</span>
-    <span class="c"># # так что ограничим `n &lt;= 1000`</span>
-    <span class="c"># functions[1][2] = 1000</span>
-
-    <span class="c"># tests.timetest(functions,</span>
-    <span class="c">#                range_set=([(range(n), reversed)</span>
-    <span class="c">#                            for n in range(0, 501, 1)],</span>
-    <span class="c">#                           [(range(n), reversed)</span>
-    <span class="c">#                            for n in range(0, 10100, 100)],</span>
-    <span class="c">#                           [(range(n), reversed)</span>
-    <span class="c">#                            for n in range(0, 105000, 5000)],</span>
-    <span class="c">#                           ),</span>
-    <span class="c">#                time_to_repeat=10,</span>
-    <span class="c">#                output=&#39;csv&#39;)</span>
-
-    <span class="c"># #d</span></pre></div>
+                   <span class="n">output</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

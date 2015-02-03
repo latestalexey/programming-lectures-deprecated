@@ -179,7 +179,7 @@ def median_of_medians(a, left=0, right=None, k=None):
     return median_of_medians(a, j, right,
                              k - size1 - size2)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     for i in range(100):
         n = random.randint(10, 1000)
         a = list(range(n))
