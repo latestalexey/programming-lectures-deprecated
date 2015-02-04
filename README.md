@@ -70,13 +70,13 @@ __Семинарист:__ Макаров Илья Андреевич
 
 ### Компиляция html
 
-Вам понадобится [форк `pycco`, поддерживающий MathJax](https://github.com/AmatanHead/pycco):
+Вам понадобится [форк `pycco`](https://github.com/AmatanHead/pycco):
 
     $ pip install git+https://github.com/AmatanHead/pycco.git
 
 Непосредственно компиляция файлов:
 
-    $ pycco sources/*.py -d lectures/
+    $ pycco sources/*.py -d lectures/ -L layout/layout.html
 
 
 [l1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html
