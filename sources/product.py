@@ -14,6 +14,7 @@ __Произведение чисел__
 
 """
 
+import random
 from mp_helpers import BigInt
 
 """
@@ -78,6 +79,8 @@ def karatsuba_algorithm(a, b):
         # членам класса, но мы не можем запихнуть эту функцию
         # внуть `BigInt`, ибо ее место здесь.
 
+        sign = a.sign * b.sign
+
         if len(a) > len(b):
             b.bytes.extend([0 for _ in range(len(a) - len(b))])
         elif len(b) > len(a):
@@ -101,7 +104,9 @@ def karatsuba_algorithm(a, b):
         a0b0 = karatsuba_algorithm(a0, b0)
         a1b1 = karatsuba_algorithm(a1, b1)
 
-        return (a0b0 +
-                ((karatsuba_algorithm((a0 + a1), (b0 + b1))
-                 - a0b0 - a1b1) << m) +
-                (a1b1 << (2 * m)))
+        result = (a0b0 +
+                 ((karatsuba_algorithm((a0 + a1), (b0 + b1))
+                  - a0b0 - a1b1) << m) +
+                 (a1b1 << (2 * m)))
+        result.sign = sign
+        return result

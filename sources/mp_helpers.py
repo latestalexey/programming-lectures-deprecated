@@ -1,6 +1,8 @@
 # coding: utf-8
 
 import random
+from copy import deepcopy
+
 
 """
 ## Класс для представления длинного числа
@@ -10,8 +12,9 @@ import random
 алгоритмы работы с длинной арифметикой.
 
 """
-class BigInt(object):
 
+
+class BigInt(object):
     def clean(self):
         # Очистить ведущие нули
 
@@ -19,23 +22,44 @@ class BigInt(object):
             self.bytes.pop()
 
     def clone(self):
-        result = BigInt()
-        result.bytes = self.bytes
-        result.sign = self.sign
-        return result
+        return deepcopy(self)
 
-    def __init__(self, init_number=0):
+    def __init__(self, init=0):
+        self.bytes = []
+        self.sign = 1
+        if isinstance(init, BigInt):
+            self.bytes = deepcopy(init.bytes)
+            self.sign = init.sign
+        elif hasattr(init, '__getitem__'):
+            self.from_iterable(init)
+        else:
+            self.from_number(init)
 
+    def from_iterable(self, iterable):
         self.bytes = []
 
-        if init_number < 0:
-            self.sign, init_number = -1, -init_number
+        if iterable.startswith('-'):
+            self.sign = -1
+            iterable = iterable[1:]
         else:
             self.sign = 1
 
-        while init_number:
-            self.bytes.append(init_number % 10)
-            init_number //= 10
+        for i in iterable[::-1]:
+            self.bytes.append(int(i))
+
+        self.clean()
+
+    def from_number(self, number):
+        self.bytes = []
+
+        if number < 0:
+            self.sign, number = -1, -number
+        else:
+            self.sign = 1
+
+        while number:
+            self.bytes.append(number % 10)
+            number //= 10
 
         self.bytes.append(0)
 
@@ -71,7 +95,7 @@ class BigInt(object):
         return self.sign == rvalue.sign and self.bytes == rvalue.bytes
 
     def __neq__(self, rvalue):
-        return not(self == rvalue)
+        return not (self == rvalue)
 
     def __gt__(self, rvalue):
         if self.sign > rvalue.sign:

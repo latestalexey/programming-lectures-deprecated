@@ -74,7 +74,8 @@ $$
 <p>Для тестирования кода необходим класс для длинной арифметики: <a href="mp_helpers.html">mp_helpers.py</a></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">mp_helpers</span> <span class="kn">import</span> <span class="n">BigInt</span></pre></div>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">mp_helpers</span> <span class="kn">import</span> <span class="n">BigInt</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -130,6 +131,8 @@ $$
         <span class="c"># членам класса, но мы не можем запихнуть эту функцию</span>
         <span class="c"># внуть `BigInt`, ибо ее место здесь.</span>
 
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sign</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">sign</span>
+
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
             <span class="n">b</span><span class="o">.</span><span class="n">bytes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))])</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
@@ -153,10 +156,12 @@ $$
         <span class="n">a0b0</span> <span class="o">=</span> <span class="n">karatsuba_algorithm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">)</span>
         <span class="n">a1b1</span> <span class="o">=</span> <span class="n">karatsuba_algorithm</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">a0b0</span> <span class="o">+</span>
-                <span class="p">((</span><span class="n">karatsuba_algorithm</span><span class="p">((</span><span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span><span class="p">),</span> <span class="p">(</span><span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span><span class="p">))</span>
-                 <span class="o">-</span> <span class="n">a0b0</span> <span class="o">-</span> <span class="n">a1b1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">)</span> <span class="o">+</span>
-                <span class="p">(</span><span class="n">a1b1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span><span class="p">)))</span></pre></div>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">a0b0</span> <span class="o">+</span>
+                 <span class="p">((</span><span class="n">karatsuba_algorithm</span><span class="p">((</span><span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span><span class="p">),</span> <span class="p">(</span><span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span><span class="p">))</span>
+                  <span class="o">-</span> <span class="n">a0b0</span> <span class="o">-</span> <span class="n">a1b1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">)</span> <span class="o">+</span>
+                 <span class="p">(</span><span class="n">a1b1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span><span class="p">)))</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">sign</span> <span class="o">=</span> <span class="n">sign</span>
+        <span class="k">return</span> <span class="n">result</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
