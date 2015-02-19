@@ -265,6 +265,9 @@ $$
 Тогда на <code>4</code> шаге мы смотрим, что лучше: оставить <code>1</code> и <code>3</code>, получив прибыль 16,
 или добавить отрезок <code>4</code>, исключив при этом из решения все,
 что с ним пересекается, получив прибыль 17.</p>
+<p>Несложно заметить, что мы применяем сортировку за \(O(n\log n)\),
+после чего на кажодм из \(n \) шагов выполняем \(O(\log n) \) операций,
+получая итоговую сложность \(O(n\log n) \).</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">find_optimal_schedule</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
