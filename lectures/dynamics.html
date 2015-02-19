@@ -232,5 +232,76 @@ $$
     </div>
   </div>
   <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>Задача о взвешенных отрезках (или о составлении расписания)</h2>
+<p>Задача состоит в следующем: пусть у нас есть набор отрезков.
+Для понятности скажем, что мы управляем рестораном. Каждый отрезок —
+это заказ зала. У отрезка есть время начала, окончания, и «вес»,
+сколько денег мы получим, если удовлетворим заказ. Ах, да, два заказа в одно
+время подтвердить нельзя.</p>
+<p>Пример:</p>
+<pre><code>1: [---15---]
+2:        [-----10-----]
+3:             [---1---]
+4:                   [-2-]
+5:                          [--4--]
+</code></pre>
+<p>Нельзя одновременно принять заказы <code>1</code> и <code>2</code>, <code>2</code> и <code>3</code>, <code>2</code> и <code>4</code>, <code>3</code> и <code>4</code>.
+Для максимального профита нужно принять зкакзы <code>1</code>, <code>4</code> и <code>5</code>,
+и получить 21 фантик.</p>
+<p>Решается оно по индукции. Пусть отрезок задан структурой <code>[begin, end, weight]</code>.</p>
+<p>Для начала отсортируем наши отрезки по времени оеончания <code>end</code>.</p>
+<p>Теперь применим динамику: на \(i \)-м шаге мы будем вычислять
+максимальный профит, который мы получим при рассмотрении первых \(i \)
+элементов массива. При этом возможны такие варианты: либо на \(i \)-м шаге
+мы не включаем \(i \)-й отрезок, и оставляем все как есть, то есть
+используем результат \(i-1 \)-го шага, либо мы включаем \(i \)-й
+отрезок, но выкидываем из решения те отрезки, которые с ним пересекаются.
+Пример: на <code>3</code> шаге мы считаем, что оптимально взять отрезки <code>1</code> и <code>3</code>.
+Тогда на <code>4</code> шаге мы смотрим, что лучше: оставить <code>1</code> и <code>3</code>, получив прибыль 16,
+или добавить отрезок <code>4</code>, исключив при этом из решения все,
+что с ним пересекается, получив прибыль 17.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">find_optimal_schedule</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
+    <span class="n">segments</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)):</span>
+        <span class="n">j</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">hi</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">segments</span><span class="p">[</span><span class="n">mid</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">i</span><span class="p">:</span>
+            <span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+                                 <span class="n">segments</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">segments</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+                                 <span class="n">segments</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
 </div>
 </body>

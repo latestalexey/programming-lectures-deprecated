@@ -52,6 +52,7 @@ __Семинарист:__ Макаров Илья Андреевич
      *   [Алгоритм Карацубы][l4.1]
 *   [5: Динамическое программирование][l5]
      *   [Задача поиска двух ближайших точек][l5.1]
+     *    [Задача о взвешенных отрезках (или о составлении расписания)][l5.2]
 *   Утилиты
     *   [Тесты][utilities.tests]
     *   [Простая длинная арифметика][utilities.mp_helpers]
@@ -102,6 +103,7 @@ __Семинарист:__ Макаров Илья Андреевич
 
 [l5]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html
 [l5.1]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-2
+[l5.2]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-4
 
 [utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html
 [utilities.mp_helpers]: http://amatanhead.github.io/Programming-lectures/lectures/mp_helpers.html
