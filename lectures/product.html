@@ -19,6 +19,7 @@
         <h1><a href="https://github.com/AmatanHead/Programming-lectures" style="text-decoration: none">product.py</a></h1>
 $$
 \newcommand{\FFT}{\mathop{\text{FFT}}}
+\newcommand{\IFFT}{\mathop{\text{IFFT}}}
 \renewcommand{\le}{\leqslant}
 \renewcommand{\ge}{\geqslant}
 \renewcommand{\O}{\varnothing}
@@ -75,6 +76,8 @@ $$
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">tests</span>
+<span class="kn">from</span> <span class="nn">cmath</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">pi</span>
 <span class="kn">from</span> <span class="nn">mp_helpers</span> <span class="kn">import</span> <span class="n">BigInt</span></pre></div>
     </div>
   </div>
@@ -86,13 +89,13 @@ $$
       </div>
       <h2>Алгоритм Карацубы</h2>
 <p>Банальное произведение чисел в столбик работает за время \(O(n^2) \),
-где \(n \) — количество цифр. Алгоритм Карацубы — первый алгоритм,
+где \(n \)&nbsp;— количество цифр. Алгоритм Карацубы&nbsp;— первый алгоритм,
 улучшающий эту оценку.</p>
 <p>Итак, пусть у нас есть два \(n \)-разрядных числа \(a \), \(b \),
 записанных в некоторой системе счисления по основанию \(B \).</p>
 <p>Представим числа \(a = \overline{a_{n-1} a_{n-2} \dots a_{0}} \),
 \(b = \overline{b_{n-1} b_{n-2} \dots b_{0}} \).</p>
-<p>Каждое из этих чисел можно «разделить» на два числа — половинки длинны
+<p>Каждое из этих чисел можно «разделить» на два числа&nbsp;— половинки длинны
 \(m = \frac n2 \):</p>
 <p>\(a = a_0 + B^m \cdot a_1; \\
    b = b_0 + B^m \cdot b_1; \)</p>
@@ -101,7 +104,7 @@ $$
    a_1 = \overline{a_{n-1} a_{n-2} \dots a_{m}}; \\
    b_0 = \overline{b_{m-1} b_{m-2} \dots b_{0}}; \\
    b_1 = \overline{b_{n-1} b_{n-2} \dots b_{m}}; \)</p>
-<p>При этом операция умножения на \(B^m \) — на самом деле побитовый сдвиг.</p>
+<p>При этом операция умножения на \(B^m \)&nbsp;— на самом деле побитовый сдвиг.</p>
 <p>Тогда:</p>
 <p>\(a \cdot b =
   ( a_0 + a_1 \cdot b^m ) \cdot ( b_0 + b_1 \cdot b^m ) = \\
@@ -123,6 +126,10 @@ $$
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">karatsuba_algorithm</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="c"># Медленный, но показывающий суть алгоритм</span>
+    <span class="c"># Слишком медленный...</span>
+    <span class="c"># С какой-то огромной кучей копирований...</span>
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
     <span class="k">else</span><span class="p">:</span>
@@ -169,6 +176,145 @@ $$
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>Быстрое преобразование Фурье (FFT)</h2>
+<p>(см.: <a href="http://jeremykun.com/2012/07/18/the-fast-fourier-transform/">1</a>,
+<a href="http://habrahabr.ru/post/113642/">2</a>)</p>
+<p><strong>Прямое преобразование:</strong></p>
+<p>Пусть дан многочлен \(n \)-й степени
+\(P_n = a_0 + a_1x + a_2x^2 + \dots + a_{n - 1}x^{n - 1} \).</p>
+<p>Тогда \(\FFT (P_n) =
+    [P_n(\omega_n^0), P_n(\omega_n^1), P_n(\omega_n^2), \dots,
+    P_n(\omega_n^{n - 1})] \), где \(\omega_n^{k} = e^{\frac{2\pi ik}{n}} \)&nbsp;—
+    \(k \)-й комплексный корень \(n \)-й степени из единицы.</p>
+<p>Примечательно, что алгоритм работает за \(O(n\log n) \). Пусть</p>
+<p>\(A(x) = a_0 + xa_2 + x^2a_4 + \dots + x^{n/2-1}a_{n-2} \),
+\(B(x) = a_1 + xa_3 + x^2a_5 + \dots + x^{n/2-1}a_{n-1} \)</p>
+<p>тогда \(P_n = A(x^2) + xB(x^2) \). Применяя принцип «разделяй и
+властвуй» можно рекурсивно вычислить БПФ:
+\(P(\omega_i)=A(\omega_{2i})+\omega_iB(\omega_{2i}) \).
+Тогда получаем классическую оценку на время
+\(T[n] = 2T[n/2] + O(n) = O(n\log n) \).</p>
+<p>Кстати, чтобы задача разделилась на подзадачи хорошо, нужно,
+чтобы степерь многочлена была степенью двойки, т. е. \(n=2^k \).</p>
+<p><strong>Обратное преобразование (IFFT):</strong></p>
+<p>Обратное преобразование выполняется за то же самое время тем же
+самым алгоритмом. Для этого нужно ко входным данным применить
+сопряжение, а к выходным&nbsp;— деление на степень многочлена.
+Несложно видеть, что легко это доказать =)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">cached</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="c"># Небольшой декоратор для кэширования результатов функций</span>
+
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">out_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">out_function</span>
+
+<span class="nd">@cached</span>
+<span class="k">def</span> <span class="nf">omega</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">exp</span><span class="p">((</span><span class="mf">2.0j</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">fft</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">even</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">[::</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">odd</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">combined</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">combined</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">even</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">+</span> <span class="n">omega</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">odd</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+            <span class="n">combined</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">even</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">omega</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">odd</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">combined</span>
+
+<span class="k">def</span> <span class="nf">ifft</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">fft</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h2>Умножение чисел через БПФ</h2>
+<p>Заметим, что \(\FFT(A \cdot B) = [\FFT(A) \cdot \FFT(B)] \),
+где \([\FFT(A) \cdot \FFT(B)] \)&nbsp;— покоординатное призведение двух массивов.
+Тогда \(A \cdot B = \IFFT([\FFT(A) \cdot \FFT(B)]) \). Легко убедиться, что
+сложность алгоритма&nbsp;— \(O(n\log n \log\log n) \). \(\log\log n \)&nbsp;— время,
+уходящее на работу с числами. Поскольку нормальзацию мы применяем лишь
+в конце, числа в разрядах получаются большими.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">pad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">i</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">fft_multiply</span><span class="p">(</span><span class="n">a_source</span><span class="p">,</span> <span class="n">b_source</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pad</span><span class="p">(</span><span class="n">a_source</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">pad</span><span class="p">(</span><span class="n">b_source</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">ifft</span><span class="p">([</span><span class="n">i</span> <span class="o">*</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fft</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">fft</span><span class="p">(</span><span class="n">b</span><span class="p">))])</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inv</span><span class="p">)):</span>
+        <span class="n">inv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">inv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="n">inv</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">inv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">//</span> <span class="mi">10</span>
+            <span class="n">inv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%=</span> <span class="mi">10</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">BigInt</span><span class="p">()</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">bytes</span> <span class="o">=</span> <span class="n">inv</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">sign</span> <span class="o">=</span> <span class="n">a_source</span><span class="o">.</span><span class="n">sign</span> <span class="o">*</span> <span class="n">b_source</span><span class="o">.</span><span class="n">sign</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">res</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       
     </div>

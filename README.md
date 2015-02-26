@@ -50,6 +50,8 @@ __Семинарист:__ Макаров Илья Андреевич
     *    [Медиана медиан (Median of Medians, BFPRT)][l3.2]
 *   [4: Произведение чисел][l4]
      *   [Алгоритм Карацубы][l4.1]
+     *   [Быстрое преобразование Фурье (FFT)][l4.2]
+     *   [Умножение чисел через БПФ][l4.3]
 *   [5: Динамическое программирование][l5]
      *   [Задача поиска двух ближайших точек][l5.1]
      *    [Задача о взвешенных отрезках (или о составлении расписания)][l5.2]
@@ -100,10 +102,12 @@ __Семинарист:__ Макаров Илья Андреевич
 
 [l4]: http://amatanhead.github.io/Programming-lectures/lectures/product.html
 [l4.1]: http://amatanhead.github.io/Programming-lectures/lectures/product.html#section-2
+[l4.2]: http://amatanhead.github.io/Programming-lectures/lectures/product.html#section-4
 
 [l5]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html
 [l5.1]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-2
 [l5.2]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-4
+[l5.2]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-6
 
 [utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html
 [utilities.mp_helpers]: http://amatanhead.github.io/Programming-lectures/lectures/mp_helpers.html

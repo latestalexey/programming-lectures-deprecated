@@ -15,13 +15,15 @@ __Произведение чисел__
 """
 
 import random
+import tests
+from cmath import exp, pi
 from mp_helpers import BigInt
 
 """
 ## Алгоритм Карацубы
 
 Банальное произведение чисел в столбик работает за время \\(O(n^2) \\),
-где \\(n \\) — количество цифр. Алгоритм Карацубы — первый алгоритм,
+где \\(n \\)&nbsp;— количество цифр. Алгоритм Карацубы&nbsp;— первый алгоритм,
 улучшающий эту оценку.
 
 Итак, пусть у нас есть два \\(n \\)-разрядных числа \\(a \\), \\(b \\),
@@ -30,7 +32,7 @@ from mp_helpers import BigInt
 Представим числа \\(a = \overline{a_{n-1} a_{n-2} \dots a_{0}} \\),
 \\(b = \overline{b_{n-1} b_{n-2} \dots b_{0}} \\).
 
-Каждое из этих чисел можно «разделить» на два числа — половинки длинны
+Каждое из этих чисел можно «разделить» на два числа&nbsp;— половинки длинны
 \\(m = \frac n2 \\):
 
 \\(a = a_0 + B^m \cdot a_1; \\\\
@@ -43,7 +45,7 @@ from mp_helpers import BigInt
    b_0 = \overline{b_{m-1} b_{m-2} \dots b_{0}}; \\\\
    b_1 = \overline{b_{n-1} b_{n-2} \dots b_{m}}; \\)
 
-При этом операция умножения на \\(B^m \\) — на самом деле побитовый сдвиг.
+При этом операция умножения на \\(B^m \\)&nbsp;— на самом деле побитовый сдвиг.
 
 Тогда:
 
@@ -71,6 +73,10 @@ from mp_helpers import BigInt
 
 """
 def karatsuba_algorithm(a, b):
+    # Медленный, но показывающий суть алгоритм
+    # Слишком медленный...
+    # С какой-то огромной кучей копирований...
+
     if len(a) <= 2 or len(b) <= 2:
         return a * b
     else:
@@ -110,3 +116,121 @@ def karatsuba_algorithm(a, b):
                  (a1b1 << (2 * m)))
         result.sign = sign
         return result
+
+#d
+
+"""
+## Быстрое преобразование Фурье (FFT)
+
+(см.: [1](http://jeremykun.com/2012/07/18/the-fast-fourier-transform/),
+[2](http://habrahabr.ru/post/113642/))
+
+__Прямое преобразование:__
+
+Пусть дан многочлен \\(n \\)-й степени
+\\(P_n = a_0 + a_1x + a_2x^2 + \dots + a_{n - 1}x^{n - 1} \\).
+
+Тогда \\(\FFT (P_n) =
+    [P_n(\omega_n^0), P_n(\omega_n^1), P_n(\omega_n^2), \dots,
+    P_n(\omega_n^{n - 1})] \\), где \\(\omega_n^{k} = e^{\frac{2\pi ik}{n}} \\)&nbsp;—
+    \\(k \\)-й комплексный корень \\(n \\)-й степени из единицы.
+
+Примечательно, что алгоритм работает за \\(O(n\log n) \\). Пусть
+
+\\(A(x) = a_0 + xa_2 + x^2a_4 + \dots + x^{n/2-1}a_{n-2} \\),
+\\(B(x) = a_1 + xa_3 + x^2a_5 + \dots + x^{n/2-1}a_{n-1} \\)
+
+тогда \\(P_n = A(x^2) + xB(x^2) \\). Применяя принцип «разделяй и
+властвуй» можно рекурсивно вычислить БПФ:
+\\(P(\omega_i)=A(\omega_{2i})+\omega_iB(\omega_{2i}) \\).
+Тогда получаем классическую оценку на время
+\\(T[n] = 2T[n/2] + O(n) = O(n\log n) \\).
+
+Кстати, чтобы задача разделилась на подзадачи хорошо, нужно,
+чтобы степерь многочлена была степенью двойки, т. е. \\(n=2^k \\).
+
+__Обратное преобразование (IFFT):__
+
+Обратное преобразование выполняется за то же самое время тем же
+самым алгоритмом. Для этого нужно ко входным данным применить
+сопряжение, а к выходным&nbsp;— деление на степень многочлена.
+Несложно видеть, что легко это доказать =)
+
+"""
+def cached(f):
+    # Небольшой декоратор для кэширования результатов функций
+
+    cache = {}
+
+    def out_function(*args):
+        if args not in cache:
+            cache[args] = f(*args)
+        return cache[args]
+
+    return out_function
+
+@cached
+def omega(n, k):
+    return exp((2.0j * pi * k) / n)
+
+def fft(x):
+    n = len(x)
+    if n == 1:
+        return x
+    else:
+        even = fft(x[::2])
+        odd = fft(x[1::2])
+
+        combined = [0] * n
+        for m in range(n // 2):
+            combined[m] = even[m] + omega(n, -m) * odd[m]
+            combined[m + n // 2] = even[m] - omega(n, -m) * odd[m]
+
+        return combined
+
+def ifft(x):
+    return [j.real / len(x) for j in fft([i.conjugate() for i in x])]
+
+#d
+
+"""
+## Умножение чисел через БПФ
+
+Заметим, что \\(\FFT(A \cdot B) = [\FFT(A) \cdot \FFT(B)] \\),
+где \\([\FFT(A) \cdot \FFT(B)] \\)&nbsp;— покоординатное призведение двух массивов.
+Тогда \\(A \cdot B = \IFFT([\FFT(A) \cdot \FFT(B)]) \\). Легко убедиться, что
+сложность алгоритма&nbsp;— \\(O(n\log n \log\log n) \\). \\(\log\log n \\)&nbsp;— время,
+уходящее на работу с числами. Поскольку нормальзацию мы применяем лишь
+в конце, числа в разрядах получаются большими.
+
+"""
+def pad(x):
+    i = 0
+    while 2 ** i < len(x):
+        i += 1
+    return x + [0] * (2 ** i - len(x))
+
+def fft_multiply(a_source, b_source):
+    a = pad(a_source.bytes)
+    b = pad(b_source.bytes)
+    if len(a) > len(b):
+        b += [0] * (len(a) - len(b))
+    elif len(b) > len(a):
+        a += [0] * (len(b) - len(a))
+    a += [0] * len(a)
+    b += [0] * len(b)
+
+    inv = ifft([i * j for i, j in zip(fft(a), fft(b))])
+
+    for i in range(len(inv)):
+        inv[i] = int(inv[i] + 0.5)
+        if inv[i] > 9:
+            inv[i + 1] += inv[i] // 10
+            inv[i] %= 10
+
+    res = BigInt()
+    res.bytes = inv
+    res.sign = a_source.sign * b_source.sign
+    res.clean()
+
+    return res
