@@ -58,6 +58,7 @@ __Семинарист:__ Макаров Илья Андреевич
 *   Утилиты
     *   [Тесты][utilities.tests]
     *   [Простая длинная арифметика][utilities.mp_helpers]
+    *   [Визуализация лабиринтов][utilities.maze_plot]
 
 
 ## Сборка
@@ -70,6 +71,13 @@ __Семинарист:__ Макаров Илья Андреевич
 в html страницы с помощью генератора документации.
 
 Обратите внимание, что основная ветка в этом проекте — `gh-pages`, а не `master`.
+
+### Зависимости
+
+Для работы визуализатора поиска пути в лабиринтах необходим `tkinter`.
+В windows и OSX он входит в стандартный пакет python, в линуксах он есть в apt-get:
+
+    $ sudo apt-get install python3-tk
 
 ### Компиляция html
 
@@ -112,3 +120,4 @@ __Семинарист:__ Макаров Илья Андреевич
 
 [utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html
 [utilities.mp_helpers]: http://amatanhead.github.io/Programming-lectures/lectures/mp_helpers.html
+[utilities.maze_plot]: http://amatanhead.github.io/Programming-lectures/lectures/maze_plot.html
