@@ -7,16 +7,16 @@ from random import shuffle, randrange
 
 class Maze(Frame):
     def __init__(self, width=600, height=600, vertical_cells=51,
-                 horizontal_cells=51, border_width=0,
-                 keep_ratio=True, field=None, **kw):
+                 horizontal_cells=51, border_width=0, keep_ratio=True,
+                 field=None, colors=None, **kw):
         """
         Creates new TK app to display a maze
 
-        :param border_width: border width
         :param width: maze width in px
         :param height: maze height in px
         :param vertical_cells: amount of vertical cells in maze
         :param horizontal_cells: amount of horizontal cells in maze
+        :param border_width: border width
         :param keep_ratio: if `True`, adjust height to keep tiles square
         :param field: a maze of a walls. `field[x][y] == 1` means
                       `x`th `y`th tile is a wall (fills black).
@@ -24,6 +24,11 @@ class Maze(Frame):
                       Note that `vertical_cells` and `horizontal_cells`
                       will be raised to be odd.
                       In the random generated maze the enter is in (0, 0).
+        :param colors: an array of colors mapped to tiles statuses.
+                       `colors[0]` is for empty tile;
+                       `colors[1]` is for wall;
+                       Use others as you wish!
+
         """
         super().__init__(**kw)
 
@@ -32,11 +37,16 @@ class Maze(Frame):
                 vertical_cells > 0 and
                 horizontal_cells > 0)
 
+        if not colors:
+            colors = ["white", "black", "red", "green", "blue"]
+
+        self.colors = colors
+
         if field is None:
             vertical_cells += not (vertical_cells % 2)
             horizontal_cells += not (horizontal_cells % 2)
             self.field = list(self.make_maze(vertical_cells // 2,
-                              horizontal_cells // 2))
+                                             horizontal_cells // 2))
 
         self.width = width
         self.height = height
@@ -61,19 +71,85 @@ class Maze(Frame):
             for j in range(self.vertical_cells):
                 self.w.create_rectangle(i * hs, j * vs,
                                         (i + 1) * hs, (j + 1) * vs,
-                                        fill=('black'
-                                              if self.field[i][j] else
-                                              'white'),
+                                        fill=self.colors[self.field[i][j]],
                                         tags=('%s %s' % (i, j),),
                                         width=border_width)
 
     def fill_cell(self, i, j, color='white'):
+        """
+        Sets color of `(i, j)` tile to `color`
+
+        :param i: vertical position
+        :param j: horizontal position
+        :param color: Tk color string
+
+        """
         self.w.itemconfig('%s %s' % (i, j), fill=color)
 
+    def fill_cell_from_color_index(self, i, j, color):
+        if color > 2:
+            color -= 2
+            color %= len(self.colors) - 2
+            color += 2
+        self.fill_cell(i, j, self.colors[color])
+
     def clear_cell(self, i, j):
+        """
+        Sets color of `(i, j)` tile to white
+
+        :param i: vertical position
+        :param j: horizontal position
+
+        """
         self.fill_cell(i, j)
 
+    def status(self, i, j, status=None):
+        """
+        Sets status of `(i, j)` tile to `status`
+        and changes its color according to `colors` array
+        if `status` is specified. Returns current
+        status of cell if not.
+
+        :param i: vertical position
+        :param j: horizontal position
+        :param status: a new status of a tile
+
+        """
+        if status is None:
+            return self.field[i][j]
+        else:
+            self.field[i][j] = status
+            color = status
+            if color > 2:
+                color -= 2
+                color %= len(self.colors) - 2
+                color += 2
+
+            self.fill_cell(i, j, self.colors[color])
+
+    def neighbours(self, i, j):
+        """
+        Returns all neighbours of `(i, j)` tile
+
+        :param i: vertical position
+        :param j: horizontal position
+        :return: tuple of coordinates
+                 ((i - 1, j), (i, j - 1), (i + 1, j), (i, j + 1))
+
+        """
+        return ((i + x, j + y)
+                for x, y in ((0, 1), (0, -1), (1, 0), (-1, 0))
+                if (0 <= i + x < self.vertical_cells and
+                    0 <= j + y < self.horizontal_cells))
+
     def call_async(self, f):
+        """
+        The decorator to allow delays without blocking I/O.
+
+        Use `yield t` in a decorated function to sleep for `t`ms.
+
+        """
+
         def handle_function(*args, **kwargs):
             gen = f(*args, **kwargs)
 
@@ -90,6 +166,11 @@ class Maze(Frame):
 
     @staticmethod
     def make_maze(w, h):
+        # Private
+        """
+        Generates random maze with size `(2 * w, 2 * h)`.
+
+        """
         vis = [[0] * w + [1] for _ in range(h)] + [[1] * (w + 1)]
         ver = [[[1, 0]] * w + [[1]] for _ in range(h)] + [[]]
         hor = [[[1, 1]] * w + [[1]] for _ in range(h + 1)]
@@ -131,28 +212,19 @@ if __name__ == "__main__":
     root = Tk()
     maze = Maze(master=root, vertical_cells=51, horizontal_cells=51)
 
-    colors = ["red", "green", "blue", "white"]
-
     @maze.call_async
     def bfs():
         queue = []
-        positions = ((0, 1), (0, -1), (1, 0), (-1, 0))
-        step = 1
-        wave = 4
+        wave = 0
 
         while 1:
             s = len(queue)
-            step += 1
             while s > 0:
                 s -= 1
-                xi, xj = queue.pop(0)
-                for i, j in positions:
-                    x, y = xi + i, xj + j
-                    if 0 <= x < 51 and 0 <= y < 51:
-                        if maze.field[x][y] != wave and maze.field[x][y] != 1:
-                            queue.append((x, y))
-                            maze.field[x][y] = wave
-                            maze.fill_cell(x, y, colors[wave % len(colors)])
+                for x, y in maze.neighbours(*queue.pop(0)):
+                    if maze.status(x, y) != wave + 2 and maze.status(x, y) != 1:
+                        queue.append((x, y))
+                        maze.status(x, y, wave + 2)
 
             if not len(queue):
                 wave += 1
