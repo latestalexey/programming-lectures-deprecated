@@ -34,13 +34,13 @@ __Оценка сложности алгоритмов, время сортир�
     \forall ~ n > n_0 \Rightarrow (0 \le f < cg)(n) \\)
 
 \\(f = \omega(g) \Rightarrow \forall ~ c > 0 ~ \exists ~ n_0 > 0 :
-    \forall ~ n > n_0 \Rightarrow (0 \le cf < g)(n) \\)
+    \forall ~ n > n_0 \Rightarrow (0 \le cg < f)(n) \\)
 
 \\(f = O(g) \Rightarrow \exists ~ c, n_0 > 0 :
     \forall ~ n > n_0 \Rightarrow (0 \le f \le cg)(n) \\)
 
 \\(f = \Omega(g) \Rightarrow \exists ~ c, n_0 > 0 :
-    \forall ~ n > n_0 \Rightarrow (0 \le cf \le g)(n) \\)
+    \forall ~ n > n_0 \Rightarrow (0 \le cg \le f)(n) \\)
 
 \\(f = \Theta(g) \Rightarrow \exists ~ c_1, c_2, n_0 > 0 :
     \forall ~ n > n_0 \Rightarrow (0 \le c_1g \le f \le c_2g)(n)\\)
