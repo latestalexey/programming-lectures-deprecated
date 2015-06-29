@@ -90,34 +90,34 @@ __Семинарист:__ Макаров Илья Андреевич
     $ pycco sources/*.py -d lectures/ -L layout/layout.html
 
 
-[l1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html
-[l1.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-3
-[l1.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-5
-[l1.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-7
-[l1.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts_theory.html#section-9
+[l1]: http://amatanhead.github.io/programming-lectures/lectures/sorts_theory.html
+[l1.1]: http://amatanhead.github.io/programming-lectures/lectures/sorts_theory.html#section-3
+[l1.2]: http://amatanhead.github.io/programming-lectures/lectures/sorts_theory.html#section-5
+[l1.3]: http://amatanhead.github.io/programming-lectures/lectures/sorts_theory.html#section-7
+[l1.4]: http://amatanhead.github.io/programming-lectures/lectures/sorts_theory.html#section-9
 
-[l2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html
-[l2.1]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-2
-[l2.2]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-4
-[l2.3]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-6
-[l2.4]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-8
-[l2.5]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-10
-[l2.6]: http://amatanhead.github.io/Programming-lectures/lectures/sorts.html#section-12
+[l2]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html
+[l2.1]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html#section-2
+[l2.2]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html#section-4
+[l2.3]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html#section-6
+[l2.4]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html#section-8
+[l2.5]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html#section-10
+[l2.6]: http://amatanhead.github.io/programming-lectures/lectures/sorts.html#section-12
 
-[l3]: http://amatanhead.github.io/Programming-lectures/lectures/median.html
-[l3.1]: http://amatanhead.github.io/Programming-lectures/lectures/median.html#section-2
-[l3.2]: http://amatanhead.github.io/Programming-lectures/lectures/median.html#section-4
+[l3]: http://amatanhead.github.io/programming-lectures/lectures/median.html
+[l3.1]: http://amatanhead.github.io/programming-lectures/lectures/median.html#section-2
+[l3.2]: http://amatanhead.github.io/programming-lectures/lectures/median.html#section-4
 
-[l4]: http://amatanhead.github.io/Programming-lectures/lectures/product.html
-[l4.1]: http://amatanhead.github.io/Programming-lectures/lectures/product.html#section-2
-[l4.2]: http://amatanhead.github.io/Programming-lectures/lectures/product.html#section-4
-[l4.3]: http://amatanhead.github.io/Programming-lectures/lectures/product.html#section-6
+[l4]: http://amatanhead.github.io/programming-lectures/lectures/product.html
+[l4.1]: http://amatanhead.github.io/programming-lectures/lectures/product.html#section-2
+[l4.2]: http://amatanhead.github.io/programming-lectures/lectures/product.html#section-4
+[l4.3]: http://amatanhead.github.io/programming-lectures/lectures/product.html#section-6
 
-[l5]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html
-[l5.1]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-2
-[l5.2]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-4
-[l5.2]: http://amatanhead.github.io/Programming-lectures/lectures/dynamics.html#section-6
+[l5]: http://amatanhead.github.io/programming-lectures/lectures/dynamics.html
+[l5.1]: http://amatanhead.github.io/programming-lectures/lectures/dynamics.html#section-2
+[l5.2]: http://amatanhead.github.io/programming-lectures/lectures/dynamics.html#section-4
+[l5.2]: http://amatanhead.github.io/programming-lectures/lectures/dynamics.html#section-6
 
-[utilities.tests]: http://amatanhead.github.io/Programming-lectures/lectures/tests.html
-[utilities.mp_helpers]: http://amatanhead.github.io/Programming-lectures/lectures/mp_helpers.html
-[utilities.maze_plot]: http://amatanhead.github.io/Programming-lectures/lectures/maze_plot.html
+[utilities.tests]: http://amatanhead.github.io/programming-lectures/lectures/tests.html
+[utilities.mp_helpers]: http://amatanhead.github.io/programming-lectures/lectures/mp_helpers.html
+[utilities.maze_plot]: http://amatanhead.github.io/programming-lectures/lectures/maze_plot.html
